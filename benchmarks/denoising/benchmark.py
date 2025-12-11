@@ -7,9 +7,10 @@ import numpy as np
 from tqdm.auto import tqdm
 from typing import Any
 import pandas as pd  # noqa: TID253
+import benchmarks
 
 
-class Benchmark:
+class DenoisingBenchmark(benchmarks.Benchmark):
     r"""
     Benchmark for Gaussian Denoising on Urban100 dataset
 
@@ -62,7 +63,7 @@ class Benchmark:
 
 
 if __name__ == "__main__":
-    benchmark = Benchmark()
+    benchmark = DenoisingBenchmark()
     models = [dinv.models.DRUNet(), dinv.models.Restormer()]
 
     device = dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
@@ -71,7 +72,9 @@ if __name__ == "__main__":
     for model in models:
         model_name = type(model).__name__
         psnr_avg, psnr_std = benchmark.run(model, device=device)
-        rows.append({"model_name": model_name, "psnr_avg": psnr_avg, "psnr_std": psnr_std})
+        rows.append(
+            {"model_name": model_name, "psnr_avg": psnr_avg, "psnr_std": psnr_std}
+        )
 
     df = pd.DataFrame(rows)
     out_path = "./denoising.csv"
