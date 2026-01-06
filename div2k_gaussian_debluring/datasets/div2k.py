@@ -16,6 +16,7 @@ class Dataset(BaseDataset):
     parameters = {
         'sigma': [0.1],
         'img_size': [256],
+        'debug': [False],
     }
 
     requirements = ["datasets"]
@@ -30,6 +31,8 @@ class Dataset(BaseDataset):
         dataset = DIV2K(
             root, mode="val", download=True, transform=transform
         )
+        if self.debug:
+            dataset = dinv.torch.utils.data.Subset(dataset, [0, 1, 2])
 
         return dict(
             dataset=dataset,
