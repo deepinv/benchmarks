@@ -1,0 +1,11 @@
+plots:
+  - "Boxplot Deepinv"
+plot_configs:
+  PSNR:
+    psnr_metric: PSNR
+    plot_kind: psnr
+    scale: log
+  NIQE:
+    psnr_metric: NIQE
+    plot_kind: psnr
+    scale: linear
