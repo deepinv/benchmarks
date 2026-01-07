@@ -22,7 +22,8 @@ class Objective(BaseObjective):
         self.physics = physics
 
     def evaluate_result(self, model):
-        device = model.device
+        device = getattr(model, 'device', None)
+        self.physics = self.physics.to(device)
 
         metrics = [
             dinv.loss.PSNR(),
