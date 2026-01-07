@@ -14,6 +14,8 @@ class Dataset(BaseDataset):
 
     name = "DIV2K"
     parameters = {
+        'physics' : ['Blur'],
+        'noise' : ['GaussianNoise'],
         'sigma': [0.1],
         'img_size': [256],
         'debug': [False],

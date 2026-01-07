@@ -15,6 +15,8 @@ class Dataset(BaseDataset):
     name = "CBSD68"
 
     parameters = {
+        'physics' : ['Denoising'],
+        'noise' : ['GaussianNoise'],
         'img_size': [256],
         'sigma': [0.1],
         'debug': [False],
