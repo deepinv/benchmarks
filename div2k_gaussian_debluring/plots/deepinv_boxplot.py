@@ -6,7 +6,7 @@ UNITS = {
 
 
 class Plot(BasePlot):
-    name = "Boxplot Deepinv"
+    name = "Deepinv Boxplot"
     type = "boxplot"
     dropdown = {
         "metric": [
