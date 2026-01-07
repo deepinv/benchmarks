@@ -1,7 +1,8 @@
 from benchopt import BaseObjective
 
 import time
-from deepinv.loss import PSNR, NIQE
+import deepinv as dinv
+from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
@@ -22,26 +23,24 @@ class Objective(BaseObjective):
         self.physics = physics
 
     def evaluate_result(self, model):
-        results = []
+        device = getattr(model, 'device', None)
 
-        psnr = PSNR()
-        niqe = NIQE()
-        for i, X in enumerate(self.dataset):
-            Y = self.physics.forward(X)
-            t_start = time.perf_counter()
-            X_pred = model(Y[None], self.physics)
-            t_end = time.perf_counter()
+        metrics = [
+            dinv.loss.PSNR(),
+            dinv.loss.NIQE(device=device)
+        ]
 
-            results += [
-                dict(
-                    NIQE=niqe(X_pred).item(),
-                    PSNR=psnr(X_pred, X).item(),
-                    runtime=t_end - t_start,
-                    image_id=i
-                )
-            ]
-            if i > 2:
-                break
+        t_start = time.perf_counter()
+        results = dinv.test(
+            model,
+            DataLoader(self.dataset),
+            self.physics,
+            online_measurements=True,
+            device=device,
+            metrics=metrics,
+            compare_no_learning=False
+        )
+        results['runtime'] = time.perf_counter() - t_start
 
         return results
 

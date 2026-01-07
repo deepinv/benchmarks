@@ -2,6 +2,7 @@ from benchopt import BaseDataset
 from benchopt.config import get_data_path
 
 from torchvision import transforms
+import deepinv as dinv
 from deepinv.datasets import CBSD68
 from deepinv.physics import (
     Denoising,
@@ -16,6 +17,7 @@ class Dataset(BaseDataset):
     parameters = {
         'img_size': [256],
         'sigma': [0.1],
+        'debug': [False],
     }
 
     requirements = ["datasets"]
@@ -30,6 +32,9 @@ class Dataset(BaseDataset):
         dataset = CBSD68(
             root, download=True, transform=transform
         )
+
+        if self.debug:
+            dataset = dinv.torch.utils.data.Subset(dataset, [0, 1, 2])
 
         return dict(
             dataset=dataset,
