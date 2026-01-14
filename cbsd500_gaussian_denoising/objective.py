@@ -31,7 +31,6 @@ class Objective(BaseObjective):
             dinv.loss.NIQE(device=device)
         ]
 
-        t_start = time.perf_counter()
         results = dinv.test(
             model,
             DataLoader(self.dataset),
@@ -41,7 +40,6 @@ class Objective(BaseObjective):
             metrics=metrics,
             compare_no_learning=False
         )
-        results['runtime'] = time.perf_counter() - t_start
 
         return results
 

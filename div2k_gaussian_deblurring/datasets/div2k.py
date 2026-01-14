@@ -24,7 +24,6 @@ class Dataset(BaseDataset):
     requirements = ["datasets"]
 
     def get_data(self):
-
         root = get_data_path("DIV2K")
         transform = transforms.Compose([
             transforms.Resize((self.img_size, self.img_size)),

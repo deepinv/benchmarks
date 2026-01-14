@@ -8,7 +8,6 @@ class Solver(BaseSolver):
     name = 'RAM'
 
     parameters = {}
-
     sampling_strategy = 'run_once'
 
     requirements = []
