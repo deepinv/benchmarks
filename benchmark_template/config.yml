@@ -1,0 +1,12 @@
+plots:
+  - Deepinv Boxplot
+plot_configs: # add here configurations for plotting each metric
+  PSNR:
+    plot_kind: deepinv_boxplot
+    metric: PSNR
+    scale: log
+  NIQE:
+    plot_kind: deepinv_boxplot
+    metric: NIQE
+    scale: linear
+  # add more plot configurations as needed
