@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 
 class Objective(BaseObjective):
 
-    name = "Debluring on Div2K"
+    name = "DIV2K Gaussian Deblurring"
 
     url = "https://github.com/deep-inverse/benchmarks"
 

@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 class Objective(BaseObjective):
 
     # Name to select the objective in the CLI and to display the results.
-    name = "Denoising on CBSD68"
+    name = "CBSD68 denoising"
 
     url = "https://github.com/deep-inverse/benchmarks"
 
