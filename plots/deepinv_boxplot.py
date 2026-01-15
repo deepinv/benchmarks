@@ -8,7 +8,7 @@ UNITS = {
 class Plot(BasePlot):
     name = "Deepinv Boxplot"
     type = "boxplot"
-    dropdown = {
+    options = {
         "metric": [
             "PSNR",
             "NIQE",

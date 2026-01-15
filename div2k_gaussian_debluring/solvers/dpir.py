@@ -11,10 +11,6 @@ class Solver(BaseSolver):
         'sigma': [0.1],
     }
 
-    sampling_strategy = 'run_once'
-
-    requirements = []
-
     def set_objective(self, train_dataset=None, physics=None):
         device = (
             dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"

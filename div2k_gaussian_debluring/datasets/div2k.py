@@ -19,6 +19,10 @@ class Dataset(BaseDataset):
         'debug': [False],
     }
 
+    test_parameters = {
+        "debug": [True]
+    }
+
     requirements = ["datasets"]
 
     def get_data(self):
