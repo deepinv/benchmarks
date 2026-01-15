@@ -2,6 +2,7 @@
 **/__pycache__/
 **/__cache__/
 **/data/
+**/outputs/
 
 # IDE config folders
 **/.vscode/

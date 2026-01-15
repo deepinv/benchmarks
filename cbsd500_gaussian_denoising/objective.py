@@ -1,6 +1,5 @@
 from benchopt import BaseObjective
 
-import time
 import deepinv as dinv
 from torch.utils.data import DataLoader
 
@@ -16,7 +15,10 @@ class Objective(BaseObjective):
 
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.
-    min_benchopt_version = "1.7"
+    min_benchopt_version = "1.8"
+
+    # Deactivate multiple runs for each solver
+    sampling_strategy = "run_once"
 
     def set_data(self, dataset, physics):
         self.dataset = dataset
@@ -44,7 +46,14 @@ class Objective(BaseObjective):
         return results
 
     def get_one_result(self):
-        return dict(model=lambda x: x)
+
+        class DummyModel:
+            def eval(self): pass
+
+            def __call__(self, x, physics=None):
+                return physics.A_adjoint(x)
+
+        return dict(model=DummyModel())
 
     def get_objective(self):
         return dict(
