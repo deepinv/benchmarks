@@ -19,12 +19,44 @@ jobs:
       benchmark-dirs: ${{ steps.find-dirs.outputs.dirs }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Find benchmark directories
         id: find-dirs
         run: |
-          # Find all directories containing an objective.py file
-          dirs=$(find . -maxdepth 2 -name "objective.py" -type f | xargs dirname | sed 's|./||' | jq -R -s -c 'split("\n")[:-1]')
-          echo "dirs=$dirs" >> $GITHUB_OUTPUT
+          # List all benchmark directories containing an objective.py file (plain list)
+          dirs_list=$(find . -maxdepth 2 -name "objective.py" -type f | xargs dirname | sed 's|./||')
+
+          # Compute a single reference range per event
+          ref_range=""
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Ensure base branch is available and compare base...HEAD
+            git fetch --no-tags --prune --depth=1 origin +refs/heads/${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}
+            ref_range="origin/${{ github.event.pull_request.base.ref }}...HEAD"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            # Compare before..sha for the push
+            if [ -n "${{ github.event.before }}" ] && [ -n "${{ github.sha }}" ]; then
+              ref_range="${{ github.event.before }}..${{ github.sha }}"
+            fi
+          fi
+
+          # Filter directories based on changes relative to ref_range
+          filtered=""
+          if [ -n "$ref_range" ]; then
+            # Include only directories that have changes relative to ref_range
+            for d in $dirs_list; do
+              if git diff --name-only "$ref_range" -- "$d" | grep -q .; then
+                filtered="${filtered}${d}\n"
+              fi
+            done
+          else
+            # No ref_range (e.g., schedule/tag/create): include all benchmarks
+            filtered=$(printf "%s\n" "$dirs_list")
+          fi
+
+          # Build JSON array from filtered list using jq and output in GitHub Actions format
+          dirs_json=$(printf "%b" "$filtered" | sed '/^$/d' | jq -R -s -c 'split("\n")[:-1]')
+          echo "dirs=$dirs_json" >> $GITHUB_OUTPUT
 
   benchopt_dev:
     needs: find-benchmarks
