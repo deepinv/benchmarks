@@ -14,8 +14,8 @@ class Dataset(BaseDataset):
 
     name = "CBSD68"
     parameters = {
-        'physics' : ['Denoising'],
-        'noise' : ['GaussianNoise'],
+        'physics': ['Denoising'],
+        'noise': ['GaussianNoise'],
         'sigma': [0.1],
         'img_size': [256],
         'debug': [False],
@@ -24,8 +24,6 @@ class Dataset(BaseDataset):
     test_parameters = {
         "debug": [True]
     }
-
-    requirements = ["datasets"]
 
     def get_data(self):
 
