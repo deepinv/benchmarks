@@ -14,6 +14,8 @@ class Dataset(BaseDataset):
 
     name = "DIV2K"
     parameters = {
+        'physics' : ['Blur'],
+        'noise' : ['GaussianNoise'],
         'sigma': [0.1],
         'img_size': [256],
         'debug': [False],
@@ -26,7 +28,6 @@ class Dataset(BaseDataset):
     requirements = ["datasets"]
 
     def get_data(self):
-
         root = get_data_path("DIV2K")
         transform = transforms.Compose([
             transforms.Resize((self.img_size, self.img_size)),
