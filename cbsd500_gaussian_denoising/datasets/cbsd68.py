@@ -13,13 +13,16 @@ from deepinv.physics import (
 class Dataset(BaseDataset):
 
     name = "CBSD68"
-
     parameters = {
         'physics' : ['Denoising'],
         'noise' : ['GaussianNoise'],
-        'img_size': [256],
         'sigma': [0.1],
+        'img_size': [256],
         'debug': [False],
+    }
+
+    test_parameters = {
+        "debug": [True]
     }
 
     requirements = ["datasets"]
