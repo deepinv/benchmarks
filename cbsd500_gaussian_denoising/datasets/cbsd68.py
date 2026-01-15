@@ -8,14 +8,15 @@ from deepinv.physics import (
     Denoising,
     GaussianNoise,
 )
+import datasets  # noqa: F401
 
 
 class Dataset(BaseDataset):
 
     name = "CBSD68"
     parameters = {
-        'physics' : ['Denoising'],
-        'noise' : ['GaussianNoise'],
+        'physics': ['Denoising'],
+        'noise': ['GaussianNoise'],
         'sigma': [0.1],
         'img_size': [256],
         'debug': [False],

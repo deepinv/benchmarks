@@ -14,8 +14,8 @@ class Dataset(BaseDataset):
     # IMPORTANT: the names of physics and noise should match
     # the ones defined in deepinv.physics with exact same spelling
     parameters = {
-        'physics' : ['physics_name'],
-        'noise' : ['noise_name'],
+        'physics': ['physics_name'],
+        'noise': ['noise_name'],
         'img_size': [256],
         # add any other parameter you might need
     }
@@ -36,7 +36,9 @@ class Dataset(BaseDataset):
         )
 
         # define the physics according to the parameters
-        physics = dinv.physics.Denoising(noise_model=dinv.physics.GaussianNoise())
+        physics = dinv.physics.Denoising(
+            noise_model=dinv.physics.GaussianNoise()
+        )
 
         return dict(
             dataset=dataset,
