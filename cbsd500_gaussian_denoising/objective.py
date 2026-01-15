@@ -11,7 +11,7 @@ class Objective(BaseObjective):
 
     url = "https://github.com/deep-inverse/benchmarks"
 
-    requirements = ["deepinv"]
+    requirements = ["deepinv", "datasets"]
 
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.

@@ -23,7 +23,7 @@ class Dataset(BaseDataset):
     requirements = ["datasets"]
 
     def get_data(self):
-        root = get_data_path("DIV2K")
+        root = get_data_path("Set14_HR")
 
         transform = transforms.Compose([
             transforms.Resize((self.img_size, self.img_size)),
@@ -31,8 +31,8 @@ class Dataset(BaseDataset):
         ])
 
         # load the dataset
-        dataset = dinv.datasets.DIV2K(
-            root, mode="val", download=True, transform=transform
+        dataset = dinv.datasets.Set14HR(
+            root, download=True, transform=transform
         )
 
         # define the physics according to the parameters

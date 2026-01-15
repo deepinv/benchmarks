@@ -11,7 +11,7 @@ class Objective(BaseObjective):
 
     url = "https://github.com/deep-inverse/benchmarks"
 
-    requirements = ["deepinv"]
+    requirements = ["deepinv", "datasets"]
 
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.
@@ -46,7 +46,13 @@ class Objective(BaseObjective):
         return results
 
     def get_one_result(self):
-        return dict(model=lambda x: x)
+        class DummyModel:
+            def eval(self): pass
+
+            def __call__(self, x, physics=None):
+                return physics.A_adjoint(x)
+
+        return dict(model=DummyModel())
 
     def get_objective(self):
         return dict(
