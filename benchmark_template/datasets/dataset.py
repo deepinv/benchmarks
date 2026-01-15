@@ -20,8 +20,6 @@ class Dataset(BaseDataset):
         # add any other parameter you might need
     }
 
-    requirements = ["datasets"]
-
     def get_data(self):
         root = get_data_path("Set14_HR")
 

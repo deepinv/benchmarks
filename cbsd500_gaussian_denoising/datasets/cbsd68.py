@@ -8,7 +8,6 @@ from deepinv.physics import (
     Denoising,
     GaussianNoise,
 )
-import datasets  # noqa: F401
 
 
 class Dataset(BaseDataset):
@@ -25,8 +24,6 @@ class Dataset(BaseDataset):
     test_parameters = {
         "debug": [True]
     }
-
-    requirements = ["datasets"]
 
     def get_data(self):
 
