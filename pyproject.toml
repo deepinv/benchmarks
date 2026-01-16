@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepinv_bench"
+version = "0.0.1"
+dependencies = [
+    "torch",
+    "deepinv",
+    "benchopt"
+]
