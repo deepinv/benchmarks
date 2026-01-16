@@ -22,7 +22,7 @@ pip install deepinv[benchmarks]
 and then run on python:
 
 ```python
-from deepinv.benchmarks import run_benchmark
+from deepinv_bench import run_benchmark
 my_solver = lambda y, physics: ...  # your solver here
 results = run_benchmark(my_solver, "benchmark_name")
 ```
