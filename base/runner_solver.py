@@ -5,13 +5,13 @@ import deepinv as dinv
 from pathlib import Path
 from hashlib import md5
 from benchopt.utils.class_property import classproperty
-from benchopt.utils.dynamic_modules import get_file_hash
 
 
 class Solver(BaseSolver):
     """Class used to wrap a model as a solver for benchopt.
 
-    To use
+    To use this class, set the `model` and `name` attributes to run
+    it in the model.
     """
     name = "runner-solver"
     model = None
