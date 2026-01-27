@@ -14,8 +14,8 @@ class Dataset(BaseDataset):
 
     name = "DIV2K"
     parameters = {
-        'physics' : ['Blur'],
-        'noise' : ['GaussianNoise'],
+        'physics': ['Blur'],
+        'noise': ['GaussianNoise'],
         'sigma': [0.1],
         'img_size': [256],
         'debug': [False],
@@ -24,8 +24,6 @@ class Dataset(BaseDataset):
     test_parameters = {
         "debug": [True]
     }
-
-    requirements = ["datasets"]
 
     def get_data(self):
         root = get_data_path("DIV2K")

@@ -9,3 +9,4 @@ plot_configs:
     plot_kind: deepinv_boxplot
     metric: NIQE
     scale: linear
+data_home: "../data"

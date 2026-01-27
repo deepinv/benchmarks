@@ -16,7 +16,7 @@ class Solver(BaseSolver):
         )
 
         # replace by your model, should take (y, physics) as input
-        self.model = dinv.models.RAM(device=device)
+        self.model = dinv.models.DnCNN(device=device)
         self.model.device = device
 
     def run(self, _):

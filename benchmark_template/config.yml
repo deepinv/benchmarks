@@ -10,3 +10,4 @@ plot_configs: # add here configurations for plotting each metric
     metric: NIQE
     scale: linear
   # add more plot configurations as needed
+data_home: "../data"
