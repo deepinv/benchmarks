@@ -18,8 +18,8 @@ def run_benchmark(
     Run a benchmark on a given model.
 
 
-    :param str benchmark_name: Name of the benchmark to run. The benchmark name should match
-        a folder in the benchmarks directory.
+    :param str benchmark_name: Name of the benchmark to run. The benchmark
+        name should match a folder in the benchmarks directory.
     :param dinv.models.Reconstructor | torch.nn.Module model:
     :param str model_name: optional name of the model
         to display in the results.
@@ -35,11 +35,15 @@ def run_benchmark(
         )
 
     try:
-        benchmark = benchopt.benchmark.Benchmark(BENCHMARK_ROOT / benchmark_name)
+        benchmark = benchopt.benchmark.Benchmark(
+            BENCHMARK_ROOT / benchmark_name
+        )
     except Exception:
         raise ValueError(
-            f"Could not find benchmark: {benchmark_name}. Consider updating deepinv_bench by running \n\n"
-            f"pip install --upgrade --force-reinstall --no-deps git+https://github.com/deepinv/benchmarks.git#egg=deepinv_bench"
+            f"Could not find benchmark: {benchmark_name}. "
+            f"Consider updating deepinv_bench by running \n\n"
+            f"pip install --upgrade --force-reinstall --no-deps "
+            f"git+https://github.com/deepinv/benchmarks.git#egg=deepinv_bench"
         )
 
     objectives = benchmark.check_objective_filters([])

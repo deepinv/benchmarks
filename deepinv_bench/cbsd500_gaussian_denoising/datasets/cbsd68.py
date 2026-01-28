@@ -25,7 +25,10 @@ class Dataset(BaseDataset):
     def get_data(self):
         root = get_data_path("CBSD68")
         transform = transforms.Compose(
-            [transforms.Resize((self.img_size, self.img_size)), transforms.ToTensor()]
+            [
+                transforms.Resize((self.img_size, self.img_size)),
+                transforms.ToTensor(),
+            ]
         )
         dataset = CBSD68(root, download=True, transform=transform)
 

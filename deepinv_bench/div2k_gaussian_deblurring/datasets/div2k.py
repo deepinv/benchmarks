@@ -25,7 +25,10 @@ class Dataset(BaseDataset):
     def get_data(self):
         root = get_data_path("DIV2K")
         transform = transforms.Compose(
-            [transforms.Resize((self.img_size, self.img_size)), transforms.ToTensor()]
+            [
+                transforms.Resize((self.img_size, self.img_size)),
+                transforms.ToTensor(),
+            ]
         )
         dataset = DIV2K(root, mode="val", download=True, transform=transform)
         if self.debug:
