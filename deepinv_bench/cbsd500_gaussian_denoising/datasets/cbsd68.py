@@ -11,7 +11,6 @@ from deepinv.physics import (
 
 
 class Dataset(BaseDataset):
-
     name = "CBSD68"
     parameters = {
         "physics": ["Denoising"],
@@ -24,7 +23,6 @@ class Dataset(BaseDataset):
     test_parameters = {"debug": [True]}
 
     def get_data(self):
-
         root = get_data_path("CBSD68")
         transform = transforms.Compose(
             [transforms.Resize((self.img_size, self.img_size)), transforms.ToTensor()]

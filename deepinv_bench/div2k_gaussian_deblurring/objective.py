@@ -6,7 +6,6 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-
     name = "DIV2K Gaussian Deblurring"
 
     url = "https://github.com/deep-inverse/benchmarks"
@@ -44,7 +43,6 @@ class Objective(BaseObjective):
         return results
 
     def get_one_result(self):
-
         class DummyModel:
             def eval(self):
                 pass

@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-
     # modify name of the benchmark
     name = "benchmark_name"
 

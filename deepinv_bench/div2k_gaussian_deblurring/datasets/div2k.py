@@ -11,7 +11,6 @@ from deepinv.physics import (
 
 
 class Dataset(BaseDataset):
-
     name = "DIV2K"
     parameters = {
         "physics": ["Blur"],

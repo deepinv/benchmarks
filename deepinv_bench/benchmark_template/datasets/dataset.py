@@ -6,7 +6,6 @@ from torchvision import transforms
 
 
 class Dataset(BaseDataset):
-
     # configure the dataset name here
     name = "dataset_name"
 

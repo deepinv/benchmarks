@@ -26,7 +26,6 @@ class Plot(BasePlot):
         }
 
     def plot(self, df, metric):
-
         plot_data = []
         for solver, df_solver in df.groupby("solver_name"):
             mean = df_solver[f"objective_{metric}"].mean()

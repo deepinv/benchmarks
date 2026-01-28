@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-
     # Name to select the objective in the CLI and to display the results.
     name = "CBSD68 denoising"
 
@@ -43,7 +42,6 @@ class Objective(BaseObjective):
         return results
 
     def get_one_result(self):
-
         class DummyModel:
             def eval(self):
                 pass
