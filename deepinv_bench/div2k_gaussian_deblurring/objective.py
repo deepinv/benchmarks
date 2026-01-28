@@ -1,13 +1,12 @@
 from benchopt import BaseObjective
 
+import time
 import deepinv as dinv
 from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-
-    # modify name of the benchmark
-    name = "benchmark_name"
+    name = "DIV2K Gaussian Deblurring"
 
     url = "https://github.com/deep-inverse/benchmarks"
 
@@ -17,22 +16,19 @@ class Objective(BaseObjective):
     # Bump it up if the benchmark depends on a new feature of benchopt.
     min_benchopt_version = "1.8"
 
-    sampling_strategy = 'run_once'
+    # Deactivate multiple runs for each solver
+    sampling_strategy = "run_once"
 
     def set_data(self, dataset, physics):
         self.dataset = dataset
         self.physics = physics
 
     def evaluate_result(self, model):
-        device = getattr(model, 'device', None)
+        device = getattr(model, "device", None)
         self.physics = self.physics.to(device)
 
-        # change metrics if needed
-        metrics = [
-            dinv.loss.PSNR(),
-            dinv.loss.NIQE(device=device)
-        ]
-
+        metrics = [dinv.loss.PSNR(), dinv.loss.NIQE(device=device)]
+        t_start = time.perf_counter()
         results = dinv.test(
             model,
             DataLoader(self.dataset),
@@ -40,14 +36,16 @@ class Objective(BaseObjective):
             online_measurements=True,
             device=device,
             metrics=metrics,
-            compare_no_learning=False
+            compare_no_learning=False,
         )
+        results["runtime"] = time.perf_counter() - t_start
 
         return results
 
     def get_one_result(self):
         class DummyModel:
-            def eval(self): pass
+            def eval(self):
+                pass
 
             def __call__(self, x, physics=None):
                 return physics.A_adjoint(x)

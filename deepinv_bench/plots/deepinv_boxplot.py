@@ -26,19 +26,20 @@ class Plot(BasePlot):
         }
 
     def plot(self, df, metric):
-
         plot_data = []
-        for solver, df_solver in df.groupby('solver_name'):
-            mean = df_solver[f'objective_{metric}'].mean()
-            std = df_solver[f'objective_{metric}_std'].mean()
+        for solver, df_solver in df.groupby("solver_name"):
+            mean = df_solver[f"objective_{metric}"].mean()
+            std = df_solver[f"objective_{metric}_std"].mean()
             y = [[mean - std, mean, mean + std]]
             x = [solver]
 
-            plot_data.append({
-                "x": x,
-                "y": y,
-                "label": solver,
-                "color": self.get_style(solver)["color"],
-            })
+            plot_data.append(
+                {
+                    "x": x,
+                    "y": y,
+                    "label": solver,
+                    "color": self.get_style(solver)["color"],
+                }
+            )
 
         return plot_data

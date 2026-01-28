@@ -13,17 +13,24 @@ Benchmark results are stored in a HuggingFace repository: https://huggingface.co
 ### Evaluating Your Reconstruction Methods
 
 To evaluate your own reconstruction methods on these benchmarks,
-install DeepInverse with the benchmarks extra:
+install deepinv_bench:
 
 ```bash
-pip install deepinv[benchmarks]
+pip install git+https://github.com/deepinv/benchmarks.git#egg=deepinv_bench
+```
+
+If you have already installed benchmarks, you can update it with:
+
+```bash
+pip install --upgrade --force-reinstall --no-deps git+https://github.com/deepinv/benchmarks.git#egg=deepinv_bench
 ```
 
 and then run on python:
 
 ```python
 from deepinv_bench import run_benchmark
-my_solver = lambda y, physics: ...  # your solver here
+import deepinv as dinv
+my_solver = dinv.models.RAM() # replace with your reconstruction method
 results = run_benchmark(my_solver, "benchmark_name")
 ```
 

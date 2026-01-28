@@ -5,9 +5,8 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-
-    # Name to select the objective in the CLI and to display the results.
-    name = "CBSD68 denoising"
+    # modify name of the benchmark
+    name = "benchmark_name"
 
     url = "https://github.com/deep-inverse/benchmarks"
 
@@ -17,7 +16,6 @@ class Objective(BaseObjective):
     # Bump it up if the benchmark depends on a new feature of benchopt.
     min_benchopt_version = "1.8"
 
-    # Deactivate multiple runs for each solver
     sampling_strategy = "run_once"
 
     def set_data(self, dataset, physics):
@@ -25,13 +23,11 @@ class Objective(BaseObjective):
         self.physics = physics
 
     def evaluate_result(self, model):
-        device = getattr(model, 'device', None)
+        device = getattr(model, "device", None)
         self.physics = self.physics.to(device)
 
-        metrics = [
-            dinv.loss.PSNR(),
-            dinv.loss.NIQE(device=device)
-        ]
+        # change metrics if needed
+        metrics = [dinv.loss.PSNR(), dinv.loss.NIQE(device=device)]
 
         results = dinv.test(
             model,
@@ -40,15 +36,15 @@ class Objective(BaseObjective):
             online_measurements=True,
             device=device,
             metrics=metrics,
-            compare_no_learning=False
+            compare_no_learning=False,
         )
 
         return results
 
     def get_one_result(self):
-
         class DummyModel:
-            def eval(self): pass
+            def eval(self):
+                pass
 
             def __call__(self, x, physics=None):
                 return physics.A_adjoint(x)

@@ -13,6 +13,7 @@ class Solver(BaseSolver):
     To use this class, set the `model` and `name` attributes to run
     it in the model.
     """
+
     name = "runner-solver"
     model = None
     parameters = {}

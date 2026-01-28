@@ -8,5 +8,5 @@ version = "0.0.1"
 dependencies = [
     "torch",
     "deepinv",
-    "benchopt>1.8.0",
+    "benchopt>=1.8.0",
 ]

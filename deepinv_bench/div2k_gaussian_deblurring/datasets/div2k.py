@@ -11,29 +11,26 @@ from deepinv.physics import (
 
 
 class Dataset(BaseDataset):
-
     name = "DIV2K"
     parameters = {
-        'physics': ['Blur'],
-        'noise': ['GaussianNoise'],
-        'sigma': [0.1],
-        'img_size': [256],
-        'debug': [False],
+        "physics": ["Blur"],
+        "noise": ["GaussianNoise"],
+        "sigma": [0.1],
+        "img_size": [256],
+        "debug": [False],
     }
 
-    test_parameters = {
-        "debug": [True]
-    }
+    test_parameters = {"debug": [True]}
 
     def get_data(self):
         root = get_data_path("DIV2K")
-        transform = transforms.Compose([
-            transforms.Resize((self.img_size, self.img_size)),
-            transforms.ToTensor()
-        ])
-        dataset = DIV2K(
-            root, mode="val", download=True, transform=transform
+        transform = transforms.Compose(
+            [
+                transforms.Resize((self.img_size, self.img_size)),
+                transforms.ToTensor(),
+            ]
         )
+        dataset = DIV2K(root, mode="val", download=True, transform=transform)
         if self.debug:
             dataset = dinv.torch.utils.data.Subset(dataset, [0, 1, 2])
 
@@ -41,6 +38,6 @@ class Dataset(BaseDataset):
             dataset=dataset,
             physics=Blur(
                 filter=dinv.physics.blur.gaussian_blur(2),
-                noise_model=GaussianNoise(0.05)
+                noise_model=GaussianNoise(0.05),
             ),
         )
