@@ -4,14 +4,12 @@ import deepinv as dinv
 
 
 class Solver(BaseSolver):
-    name = 'DRUNet'
+    name = "DRUNet"
 
     parameters = {}
 
     def set_objective(self, train_dataset=None, physics=None):
-        self.model = dinv.models.ArtifactRemoval(
-            dinv.models.DRUNet()
-        )
+        self.model = dinv.models.ArtifactRemoval(dinv.models.DRUNet())
 
     def run(self, _):
         pass

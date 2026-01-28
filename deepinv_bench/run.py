@@ -5,15 +5,14 @@ import benchopt
 import pandas as pd
 import deepinv as dinv
 
-
 BENCHMARK_ROOT = Path(__file__).parent
 
 
 def run_benchmark(
-        model: dinv.models.Reconstructor | torch.nn.Module,
-        benchmark_name: str,
-        model_name: str = None,
-        debug: bool = False,
+    model: dinv.models.Reconstructor | torch.nn.Module,
+    benchmark_name: str,
+    model_name: str = None,
+    debug: bool = False,
 ):
     r"""
     Run a benchmark on a given model.
@@ -30,14 +29,18 @@ def run_benchmark(
     model_name = model_name or str(model.__class__.__name__)
 
     if not isinstance(model, (dinv.models.Reconstructor, torch.nn.Module)):
-        raise ValueError("Model should be an instance of "
-                         "deepinv.models.Reconstructor or torch.nn.Module")
+        raise ValueError(
+            "Model should be an instance of "
+            "deepinv.models.Reconstructor or torch.nn.Module"
+        )
 
     try:
         benchmark = benchopt.benchmark.Benchmark(BENCHMARK_ROOT / benchmark_name)
     except Exception:
-        raise ValueError(f"Could not find benchmark: {benchmark_name}. Consider updating deepinv_bench by running \n\n"
-                         f"pip install --upgrade --force-reinstall --no-deps git+https://github.com/deepinv/benchmarks.git#egg=deepinv_bench")
+        raise ValueError(
+            f"Could not find benchmark: {benchmark_name}. Consider updating deepinv_bench by running \n\n"
+            f"pip install --upgrade --force-reinstall --no-deps git+https://github.com/deepinv/benchmarks.git#egg=deepinv_bench"
+        )
 
     objectives = benchmark.check_objective_filters([])
     datasets = benchmark.check_dataset_patterns([f"*[debug={debug}]"])
@@ -49,6 +52,7 @@ def run_benchmark(
             raise ValueError
     except Exception:
         from deepinv_bench.base.runner_solver import Solver
+
         solvers = [(Solver, {})]
     solver = solvers[0][0]
     solver.model = model
@@ -61,7 +65,7 @@ def run_benchmark(
         datasets=datasets,
         objectives=objectives,
         plot_result=False,
-        pdb=False
+        pdb=False,
     )
     if exit_code != 0:
         raise RuntimeError("Benchmark run failed.")
@@ -70,14 +74,13 @@ def run_benchmark(
     results = results[["solver_name"] + col]
     results = results.rename(columns=lambda x: x.replace("objective_", ""))
     # to dict
-    results = results.to_dict('records')[0]
+    results = results.to_dict("records")[0]
     return results
 
 
 if __name__ == "__main__":
     solver = dinv.models.RAM()
-    results = run_benchmark(solver,
-        "div2k_gaussian_deblurring",
-        model_name="RAM", debug=True
+    results = run_benchmark(
+        solver, "div2k_gaussian_deblurring", model_name="RAM", debug=True
     )
     print(results)

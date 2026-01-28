@@ -13,14 +13,13 @@ class Solver(BaseSolver):
     To use this class, set the `model` and `name` attributes to run
     it in the model.
     """
+
     name = "runner-solver"
     model = None
     parameters = {}
 
     def set_objective(self, train_dataset=None, physics=None):
-        device = (
-            dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
-        )
+        device = dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
         # Make sure the model is on the correct device and has a device
         # attribute to we can properly move the test data later.
         self.model.to(device)

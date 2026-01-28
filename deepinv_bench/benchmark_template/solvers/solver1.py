@@ -5,15 +5,13 @@ import deepinv as dinv
 
 
 class Solver(BaseSolver):
-    name = 'solver_name'
+    name = "solver_name"
 
     # add any hyper-parameters here
     parameters = {}
 
     def set_objective(self, train_dataset=None, physics=None):
-        device = (
-            dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
-        )
+        device = dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
 
         # replace by your model, should take (y, physics) as input
         self.model = dinv.models.DnCNN(device=device)
