@@ -21,13 +21,12 @@ def run_benchmark(
 
     :param str benchmark_name: Name of the benchmark to run.
     :param dinv.models.Reconstructor | torch.nn.Module model:
-    :param str model_name: Name of the model to display in the results.
+    :param str model_name: optional name of the model to display in the results.
     :param bool debug: Whether to run the benchmark in debug mode.
     :return: dict with benchmark results, including metrics and runtime.
     """
     model_name = model_name or model.__class__.__name__
 
-    # TODO: how can we do this with benchopt?
     benchmark = benchopt.benchmark.Benchmark(BENCHMARK_ROOT / benchmark_name)
     objectives = benchmark.check_objective_filters([])
     datasets = benchmark.check_dataset_patterns([f"*[debug={debug}]"])
@@ -59,7 +58,6 @@ def run_benchmark(
     col = [c for c in results.columns if "objective_" in c]
     results = results[["solver_name"] + col]
     results = results.rename(columns=lambda x: x.replace("objective_", ""))
-    import ipdb; ipdb.set_trace()
 
     return results
 
