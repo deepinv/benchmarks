@@ -21,7 +21,8 @@ def run_benchmark(
 
     :param str benchmark_name: Name of the benchmark to run.
     :param dinv.models.Reconstructor | torch.nn.Module model:
-    :param str model_name: optional name of the model to display in the results.
+    :param str model_name: optional name of the model
+        to display in the results.
     :param bool debug: Whether to run the benchmark in debug mode.
     :return: dict with benchmark results, including metrics and runtime.
     """
