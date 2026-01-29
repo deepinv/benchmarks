@@ -10,3 +10,7 @@ dependencies = [
     "deepinv",
     "benchopt"
 ]
+
+[tool.setuptools.packages]
+find = { namespaces = false }
+

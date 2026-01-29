@@ -6,7 +6,7 @@ import pandas as pd
 import deepinv as dinv
 
 
-BENCHMARK_ROOT = Path(__file__).parent
+BENCHMARK_ROOT = Path(__file__).parent / "benchmarks"
 
 
 def run_benchmark(
@@ -38,7 +38,7 @@ def run_benchmark(
         if len(solvers) == 1:
             raise ValueError
     except Exception:
-        from base.runner_solver import Solver
+        from deepinv_bench.runner_solver import Solver
         solvers = [(Solver, {})]
     solver = solvers[0][0]
     solver.model = model
@@ -59,7 +59,6 @@ def run_benchmark(
     col = [c for c in results.columns if "objective_" in c]
     results = results[["solver_name"] + col]
     results = results.rename(columns=lambda x: x.replace("objective_", ""))
-    import ipdb; ipdb.set_trace()
 
     return results
 
