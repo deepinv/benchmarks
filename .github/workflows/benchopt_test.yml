@@ -25,7 +25,7 @@ jobs:
         id: find-dirs
         run: |
           # List all benchmark directories containing an objective.py file (plain list)
-          dirs_list=$(find . -maxdepth 2 -name "objective.py" -type f | xargs dirname | sed 's|./||')
+          dirs_list=$(find . -maxdepth 4 -name "objective.py" -type f | xargs dirname | sed 's|./||')
 
           # Compute a single reference range per event
           ref_range=""
