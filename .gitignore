@@ -3,6 +3,7 @@
 **/__cache__/
 **/data/
 **/outputs/
+**/*.egg-info/
 
 # IDE config folders
 **/.vscode/
