@@ -8,7 +8,10 @@ from torch.utils.data import DataLoader
 class Objective(BaseObjective):
     name = "DIV2K Gaussian Deblurring"
 
-    url = "https://github.com/deep-inverse/benchmarks"
+    url = (
+        "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"
+        "div2k_gaussian_deblurring"
+    )
 
     requirements = ["deepinv", "datasets", "pip:pyiqa"]
 

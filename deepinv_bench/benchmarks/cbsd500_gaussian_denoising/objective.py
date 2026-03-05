@@ -8,7 +8,10 @@ class Objective(BaseObjective):
     # Name to select the objective in the CLI and to display the results.
     name = "CBSD68 denoising"
 
-    url = "https://github.com/deep-inverse/benchmarks"
+    url = (
+        "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"
+        "cbsd500_gaussian_denoising"
+    )
 
     requirements = ["deepinv", "datasets", "pip:pyiqa"]
 

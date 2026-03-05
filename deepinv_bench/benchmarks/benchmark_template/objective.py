@@ -8,7 +8,10 @@ class Objective(BaseObjective):
     # modify name of the benchmark
     name = "benchmark_name"
 
-    url = "https://github.com/deep-inverse/benchmarks"
+    url = (
+        "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"
+        "benchmark_template"
+    )
 
     requirements = ["deepinv", "datasets", "pip:pyiqa"]
 
