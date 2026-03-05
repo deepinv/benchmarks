@@ -54,6 +54,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
+    - name: Get Date
+      id: get-date
+      run: |
+        echo "date=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Cache benchopt runs and conda packages
+      id: cache-benchopt
+      uses: actions/cache@v5
+      with:
+        path: |
+            ~/conda_pkgs_dir
+            ${{ matrix.benchmark_dir }}/__cache__
+        # The cache is unique for each benchmark directory, OS and we
+        # invalidate it every month to avoid stale caches.
+        key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
+
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
       with:
@@ -64,6 +80,7 @@ jobs:
         channels: conda-forge
         python-version: 3.12
         activate-environment: ${{ env.CONDA_ENV }}
+        use-only-tar-bz2: true # Needed for package caching
 
     - name: Install benchopt and its dependencies
       run: |
@@ -79,5 +96,5 @@ jobs:
       run: |
         benchopt publish ${{ matrix.benchmark_dir }} --hub huggingface \
             --filename ${{ matrix.benchmark_dir }}/outputs/results_ci_run.csv \
-            --repo-id deepinv/benchmark --keep last \
+            --repo deepinv/benchmark --keep last \
             --token ${{ secrets.HF_TOKEN }}
