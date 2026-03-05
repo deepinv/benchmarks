@@ -40,8 +40,12 @@ jobs:
     strategy:
       matrix:
         benchmark_dir: ${{ fromJson(needs.find-benchmarks.outputs.benchmark-dirs) }}
+        exclude:
+            # don't run on the template benchmark, which is not meant to be run
+            - benchmark_dir: "deepinv_bench/benchmarks/benchmark_template"
     env:
       CONDA_ENV: 'run_env'
+      BENCHOPT_CONDA_CMD: 'mamba'
     defaults:
       run:
         # Need to use this shell to get conda working properly.
@@ -61,11 +65,8 @@ jobs:
         python-version: 3.12
         activate-environment: ${{ env.CONDA_ENV }}
 
-    - run: conda info
-
     - name: Install benchopt and its dependencies
       run: |
-        conda info
         mamba install -yq pip
         pip install -U git+https://github.com/benchopt/benchopt huggingface_hub
         benchopt install ${{ matrix.benchmark_dir }} --env-name ${{ env.CONDA_ENV }}
