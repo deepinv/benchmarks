@@ -44,13 +44,12 @@ jobs:
             # don't run on the template benchmark, which is not meant to be run
             - benchmark_dir: "deepinv_bench/benchmarks/benchmark_template"
     env:
-      BENCHOPT_CONDA_ENV: 'run_env'
       BENCHOPT_CONDA_CMD: 'mamba'
     defaults:
       run:
         # Need to use this shell to get conda working properly.
         # See https://github.com/marketplace/actions/setup-miniconda#important
-        shell: bash -l {0}
+        shell: bash -el {0}
 
     steps:
     - uses: actions/checkout@v6
@@ -70,31 +69,25 @@ jobs:
         # invalidate it every month to avoid stale caches.
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
 
-    - name: Clean up any existing miniconda installation
-      run: rm -rf /home/jtachell/miniconda3/_conda
-      shell: bash
-
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
         miniforge-version: latest
-        mamba-version: "*"
-        use-mamba: true
         channels: conda-forge
         python-version: 3.12
-        activate-environment: ${{ env.BENCHOPT_CONDA_ENV }}
+        installation-dir: ~/deepinv_bench_conda
         use-only-tar-bz2: true # Needed for package caching
 
     - name: Install benchopt and its dependencies
       run: |
         mamba install -yq pip
         pip install -U git+https://github.com/benchopt/benchopt huggingface_hub
-        benchopt install ${{ matrix.benchmark_dir }} --env-name ${{ env.BENCHOPT_CONDA_ENV }}
+        benchopt install ${{ matrix.benchmark_dir }}
 
     - name: Run benchmarks
       run: |
-        benchopt run ${{ matrix.benchmark_dir }} --env-name ${{ env.CONDA_ENV }} --output results_ci_run.csv --no-plot
+        benchopt run ${{ matrix.benchmark_dir }} --output results_ci_run.csv --no-plot
 
     - name: Upload results
       run: |
