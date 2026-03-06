@@ -76,7 +76,7 @@ jobs:
       shell: bash
       run: |
         mkdir -p $HOME
-        rm $HOME/miniconda/_conda || echo "symlink doesn't exist"
+        rm $HOME/miniconda3/_conda || echo "symlink doesn't exist"
 
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
