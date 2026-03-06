@@ -1,0 +1,100 @@
+name: Runs and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  create:
+    tags:
+      - '**'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  find-benchmarks:
+    runs-on: ubuntu-latest
+    outputs:
+      benchmark-dirs: ${{ steps.find-dirs.outputs.dirs }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install GitPython
+      - name: Find benchmark directories
+        id: find-dirs
+        run: python .github/scripts/find_benchmarks.py
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_BASE_REF: ${{ github.event.pull_request.base.ref }}
+
+  run-benchmarks:
+    runs-on: gpu  # ubuntu-latest
+    needs: find-benchmarks
+    strategy:
+      matrix:
+        benchmark_dir: ${{ fromJson(needs.find-benchmarks.outputs.benchmark-dirs) }}
+        exclude:
+            # don't run on the template benchmark, which is not meant to be run
+            - benchmark_dir: "deepinv_bench/benchmarks/benchmark_template"
+    env:
+      CONDA_ENV: 'run_env'
+      BENCHOPT_CONDA_CMD: 'mamba'
+    defaults:
+      run:
+        # Need to use this shell to get conda working properly.
+        # See https://github.com/marketplace/actions/setup-miniconda#important
+        shell: bash -l {0}
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Get Date
+      id: get-date
+      run: |
+        echo "date=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Cache benchopt runs and conda packages
+      id: cache-benchopt
+      uses: actions/cache@v5
+      with:
+        path: |
+            ~/conda_pkgs_dir
+            ${{ matrix.benchmark_dir }}/__cache__
+        # The cache is unique for each benchmark directory, OS and we
+        # invalidate it every month to avoid stale caches.
+        key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
+
+    - name: Setup Conda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        auto-update-conda: true
+        miniforge-version: latest
+        mamba-version: "*"
+        use-mamba: true
+        channels: conda-forge
+        python-version: 3.12
+        activate-environment: ${{ env.CONDA_ENV }}
+        use-only-tar-bz2: true # Needed for package caching
+
+    - name: Install benchopt and its dependencies
+      run: |
+        mamba install -yq pip
+        pip install -U git+https://github.com/benchopt/benchopt huggingface_hub
+        benchopt install ${{ matrix.benchmark_dir }} --env-name ${{ env.CONDA_ENV }}
+
+    - name: Run benchmarks
+      run: |
+        benchopt run ${{ matrix.benchmark_dir }} --env-name ${{ env.CONDA_ENV }} --output results_ci_run.csv --no-plot -d "*[debug=True]"
+
+    - name: Upload results
+      run: |
+        benchopt publish ${{ matrix.benchmark_dir }} --hub huggingface \
+            --filename ${{ matrix.benchmark_dir }}/outputs/results_ci_run.csv \
+            --repo deepinv/benchmarks --keep last \
+            --token ${{ secrets.HF_TOKEN }}

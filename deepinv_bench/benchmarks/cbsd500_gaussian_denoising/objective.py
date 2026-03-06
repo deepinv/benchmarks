@@ -1,14 +1,17 @@
 from benchopt import BaseObjective
 
-import time
 import deepinv as dinv
 from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-    name = "DIV2K Gaussian Deblurring"
+    # Name to select the objective in the CLI and to display the results.
+    name = "CBSD68 denoising"
 
-    url = "https://github.com/deep-inverse/benchmarks"
+    url = (
+        "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"
+        "cbsd500_gaussian_denoising"
+    )
 
     requirements = ["deepinv", "datasets", "pip:pyiqa"]
 
@@ -28,7 +31,7 @@ class Objective(BaseObjective):
         self.physics = self.physics.to(device)
 
         metrics = [dinv.loss.PSNR(), dinv.loss.NIQE(device=device)]
-        t_start = time.perf_counter()
+
         results = dinv.test(
             model,
             DataLoader(self.dataset),
@@ -38,7 +41,6 @@ class Objective(BaseObjective):
             metrics=metrics,
             compare_no_learning=False,
         )
-        results["runtime"] = time.perf_counter() - t_start
 
         return results
 
