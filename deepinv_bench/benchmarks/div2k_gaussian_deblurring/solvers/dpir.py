@@ -8,7 +8,7 @@ class Solver(BaseSolver):
     name = "DPIR"
 
     parameters = {
-        "sigma": [0.1],
+        "sigma": [0.1, 0.2],
     }
 
     def set_objective(self, train_dataset=None, physics=None):
