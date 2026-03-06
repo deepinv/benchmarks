@@ -46,15 +46,17 @@ jobs:
     env:
         HOME: /local/jtachell/runner-${{ matrix.benchmark_dir }}
         RUNNER_TEMP: /local/jtachell/runner-${{ matrix.benchmark_dir }}/temp
+        # BASH_ENV is sourced by non-login bash shells - $HOME expanded by bash
+        BASH_ENV: $HOME/.profile
         # Setup conda and benchopt
         TEST_CONDA_ENV: 'deepinv_bench'
         BENCHOPT_CONDA_CMD: 'mamba'
         BENCHOPT_DEBUG: 1
     defaults:
       run:
-        # Need to use this shell to get conda working properly.
-        # See https://github.com/marketplace/actions/setup-miniconda#important
-        shell: bash -el {0}
+        # Use non-login shell with BASH_ENV instead of -l to ensure
+        # $HOME/.profile is sourced
+        shell: bash -eo pipefail {0}
 
     steps:
     - uses: actions/checkout@v6
@@ -95,13 +97,10 @@ jobs:
     - name: Install benchopt and its dependencies
       run: |
         mamba install -yq pip
-        pip install -U git+https://github.com/benchopt/benchopt
-        conda env list
-        conda list
+        pip install -U git+https://github.com/benchopt/benchopt huggingface_hub
 
     - name: Install benchmark dependencies
       run: |
-        conda env list
         benchopt install -y ${{ matrix.benchmark_dir }} \
             --env-name ${{ env.TEST_CONDA_ENV }}
 
@@ -112,7 +111,6 @@ jobs:
 
     - name: Upload results
       run: |
-        pip install huggingface_hub
         benchopt publish ${{ matrix.benchmark_dir }} --hub huggingface \
             --filename ${{ matrix.benchmark_dir }}/outputs/results_ci_run.csv \
             --repo deepinv/benchmarks --keep last \
