@@ -72,8 +72,12 @@ jobs:
     - name: Get info about runner
       shell: bash
       run: |
-        cat ~/.profile || echo ".profile does not exist"
-        cat ~/.bashrc || echo ".bashrc does not exist"
+        cat $HOME/.profile || echo ".profile does not exist"
+        cat $HOME/.bashrc || echo ".bashrc does not exist"
+        echo "~"
+        ls -la ~
+        echo "home"
+        ls -la $HOME
 
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
@@ -88,8 +92,9 @@ jobs:
     - name: Get info about runner 3
       shell: bash
       run: |
-        cat ~/.profile || echo ".profile does not exist"
-        cat ~/.bashrc || echo ".bashrc does not exist"
+        cat $HOME/.profile || echo ".profile does not exist"
+        cat $HOME/.bashrc || echo ".bashrc does not exist"
+        ls -la ~
         conda info
 
     - name: Install benchopt and its dependencies
