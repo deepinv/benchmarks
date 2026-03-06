@@ -72,19 +72,15 @@ jobs:
     - name: Get info about runner
       shell: bash
       run: |
-        rm -rf $HOME/.profile
-        cat $HOME/.profile || echo ".profile does not exist"
-        cat $HOME/.bashrc || echo ".bashrc does not exist"
-        echo "~"
+        rm -rf $HOME/.profile || echo ".profile does not exist"
         ls -la ~
-        echo "home"
-        ls -la $HOME
 
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
         miniforge-version: latest
+        use-mamba: true
         channels: conda-forge
         python-version: 3.12
         installation-dir: deepinv_bench_conda
@@ -94,7 +90,6 @@ jobs:
       shell: bash
       run: |
         cat $HOME/.profile || echo ".profile does not exist"
-        cat $HOME/.bashrc || echo ".bashrc does not exist"
         ls -la ~
         conda info
 
