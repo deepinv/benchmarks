@@ -100,14 +100,12 @@ jobs:
         pip install -U git+https://github.com/benchopt/benchopt huggingface_hub
 
     - name: Install benchmark dependencies
-      run: |
-        benchopt install -y ${{ matrix.benchmark_dir }} \
-            --env-name ${{ env.TEST_CONDA_ENV }}
+      run: benchopt install -y ${{ matrix.benchmark_dir }}
 
     - name: Run benchmarks
       run: |
         benchopt run ${{ matrix.benchmark_dir }} --output results_ci_run.csv \
-            --no-plot --env-name ${{ env.TEST_CONDA_ENV }}
+            --no-plot
 
     - name: Upload results
       run: |
