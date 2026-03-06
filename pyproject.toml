@@ -11,6 +11,11 @@ dependencies = [
     "benchopt>=1.8.0",
 ]
 
+[project.optional-dependencies]
+test = [
+    "pytest"
+]
+
 [tool.setuptools.packages.find]
 namespaces = false
 
