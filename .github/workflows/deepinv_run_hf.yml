@@ -48,6 +48,7 @@ jobs:
         TEST_CONDA_ENV: 'deepinv_bench'
         BENCHOPT_CONDA_CMD: 'mamba'
         BENCHOPT_DEBUG: 1
+        RUNNER_TEMP: /local/jtachell/runner-${{ matrix.benchmark_dir }}/temp
     defaults:
       run:
         # Need to use this shell to get conda working properly.
