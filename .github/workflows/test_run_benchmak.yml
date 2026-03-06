@@ -46,7 +46,7 @@ jobs:
         mamba-version: "*"
         use-mamba: true
         channels: conda-forge
-        python-version: 3.12
+        python-version: '3.12'
         activate-environment: ${{ env.CONDA_ENV }}
         use-only-tar-bz2: true # Needed for package caching
 

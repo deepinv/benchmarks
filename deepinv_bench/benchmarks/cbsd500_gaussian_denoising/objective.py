@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-    # Name to select the objective in the CLI and to display the results.
     name = "CBSD68 denoising"
 
     url = (
@@ -13,7 +12,7 @@ class Objective(BaseObjective):
         "cbsd500_gaussian_denoising"
     )
 
-    requirements = ["deepinv", "datasets", "pip:pyiqa"]
+    requirements = ["deepinv", "datasets", "pip::pyiqa"]
 
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.
