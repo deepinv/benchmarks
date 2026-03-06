@@ -72,8 +72,14 @@ jobs:
     - name: Get info about runner
       shell: bash
       run: |
-        cat ~/.bashrc
         conda info
+        cat ~/.bashrc | echo "does not exist"
+
+    - name: Get info about runner 2
+      shell: bash -el {0}
+      run: |
+        conda info
+        cat ~/.bashrc | echo "does not exist"
 
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
@@ -85,11 +91,11 @@ jobs:
         installation-dir: ~/deepinv_bench_conda
         use-only-tar-bz2: true # Needed for package caching
 
-    - name: Get info about runner
+    - name: Get info about runner 3
       shell: bash
       run: |
-        cat ~/.bashrc
         conda info
+        cat ~/.bashrc | echo "does not exist"
 
     - name: Install benchopt and its dependencies
       run: |
