@@ -43,6 +43,9 @@ jobs:
         exclude:
             # don't run on the template benchmark, which is not meant to be run
             - benchmark_dir: "deepinv_bench/benchmarks/benchmark_template"
+    env:
+        HOME: '/local/jtachell/runner-${{ matrix.benchmark-dirs }}'
+        TEST_CONDA_ENV: 'deepinv_bench'
     defaults:
       run:
         # Need to use this shell to get conda working properly.
@@ -67,11 +70,9 @@ jobs:
         # invalidate it every month to avoid stale caches.
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
 
-    - name: Get info about runner
+    - name: Create job-specific HOME
       shell: bash
-      run: |
-        rm -rf $HOME/.profile || echo ".profile does not exist"
-        ls -la ~
+      run: mkdir -p $HOME
 
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
@@ -80,8 +81,8 @@ jobs:
         miniforge-version: latest
         channels: conda-forge
         python-version: 3.12
-        installation-dir: deepinv_bench_conda
         use-only-tar-bz2: true # Needed for package caching
+        activate-environment: ${{ env.TEST_CONDA_ENV }}
 
     - name: Get info about runner 3
       shell: bash
