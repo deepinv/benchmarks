@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-    # Name to select the objective in the CLI and to display the results.
     name = "CBSD68 denoising"
 
     url = (

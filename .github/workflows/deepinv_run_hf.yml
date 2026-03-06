@@ -7,7 +7,6 @@ on:
   create:
     tags:
       - '**'
-  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -51,6 +50,7 @@ jobs:
         # Setup conda and benchopt
         TEST_CONDA_ENV: 'deepinv_bench'
         BENCHOPT_CONDA_CMD: 'mamba'
+        BENCHOPT_RAISE_INSTALL_ERROR: true
         BENCHOPT_DEBUG: 1
     defaults:
       run:
@@ -76,7 +76,6 @@ jobs:
       uses: actions/cache@v5
       with:
         path: |
-            ${{ env.HOME }}/conda_pkgs_dir
             ${{ matrix.benchmark_dir }}/__cache__
         # The cache is unique for each benchmark directory, OS and we
         # invalidate it every month to avoid stale caches.
@@ -100,7 +99,8 @@ jobs:
         pip install -U git+https://github.com/benchopt/benchopt huggingface_hub
 
     - name: Install benchmark dependencies
-      run: benchopt install -y ${{ matrix.benchmark_dir }}
+      run: |
+        benchopt install -y ${{ matrix.benchmark_dir }}
 
     - name: Run benchmarks
       run: |
