@@ -48,7 +48,7 @@ jobs:
         # BASH_ENV is sourced by non-login bash shells - $HOME expanded by bash
         BASH_ENV: $HOME/.profile
         # Setup conda and benchopt
-        TEST_CONDA_ENV: 'deepinv_bench'
+        RUN_CONDA_ENV: 'deepinv_bench'
         BENCHOPT_CONDA_CMD: 'mamba'
         BENCHOPT_RAISE_INSTALL_ERROR: true
         BENCHOPT_DEBUG: 1
@@ -89,8 +89,9 @@ jobs:
         mamba-version: "*"
         use-mamba: true
         channels: conda-forge
+        conda-remove-defaults: true
         python-version: '3.11'
-        activate-environment: ${{ env.TEST_CONDA_ENV }}
+        activate-environment: ${{ env.RUN_CONDA_ENV }}
         use-only-tar-bz2: true # Needed for package caching
 
     - name: Install benchopt and its dependencies
@@ -100,12 +101,13 @@ jobs:
 
     - name: Install benchmark dependencies
       run: |
-        benchopt install -y ${{ matrix.benchmark_dir }}
+        benchopt install -y ${{ matrix.benchmark_dir }} \
+            --env-name ${{ env.RUN_CONDA_ENV }}
 
     - name: Run benchmarks
       run: |
         benchopt run ${{ matrix.benchmark_dir }} --output results_ci_run.csv \
-            --no-plot
+            --no-plot --env-name ${{ env.RUN_CONDA_ENV }}
 
     - name: Upload results
       run: |
