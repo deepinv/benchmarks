@@ -70,13 +70,6 @@ jobs:
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
 
     - name: Get info about runner
-      shell: bash
-      run: |
-        conda info
-        cat ~/.bashrc | echo "does not exist"
-
-    - name: Get info about runner 2
-      shell: bash -el {0}
       run: |
         conda info
         cat ~/.bashrc | echo "does not exist"
@@ -92,7 +85,6 @@ jobs:
         use-only-tar-bz2: true # Needed for package caching
 
     - name: Get info about runner 3
-      shell: bash
       run: |
         conda info
         cat ~/.bashrc | echo "does not exist"
