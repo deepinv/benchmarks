@@ -5,7 +5,7 @@ import benchopt
 import pandas as pd
 import deepinv as dinv
 
-BENCHMARK_ROOT = Path(__file__).parent
+BENCHMARK_ROOT = Path(__file__).parent / "benchmarks"
 
 
 def run_benchmark(
@@ -28,22 +28,29 @@ def run_benchmark(
     """
     model_name = model_name or str(model.__class__.__name__)
 
-    if not isinstance(model, (dinv.models.Reconstructor, torch.nn.Module)):
-        raise ValueError(
-            "Model should be an instance of "
-            "deepinv.models.Reconstructor or torch.nn.Module"
-        )
-
     try:
         benchmark = benchopt.benchmark.Benchmark(
             BENCHMARK_ROOT / benchmark_name
         )
     except Exception:
+        all_benchmarks = "\n-".join([
+            p.name for p in BENCHMARK_ROOT.iterdir()
+            if p.is_dir() and not p.name.startswith(".")
+            and "template" not in p.name
+        ])
         raise ValueError(
-            f"Could not find benchmark: {benchmark_name}. "
-            f"Consider updating deepinv_bench by running \n\n"
-            f"pip install --upgrade --force-reinstall --no-deps "
-            f"git+https://github.com/deepinv/benchmarks.git#egg=deepinv_bench"
+            f"Could not find benchmark: {benchmark_name}.\n"
+            f"Available benchmarks are:\n-{all_benchmarks}\n\n"
+            "If the requested benchmark is not present, consider updating "
+            "deepinv_bench by running \n\n"
+            "pip install --upgrade --force-reinstall --no-deps "
+            "git+https://github.com/deepinv/benchmarks.git"
+        )
+
+    if not isinstance(model, (dinv.models.Reconstructor, torch.nn.Module)):
+        raise ValueError(
+            "Model should be an instance of "
+            "deepinv.models.Reconstructor or torch.nn.Module"
         )
 
     objectives = benchmark.check_objective_filters([])
