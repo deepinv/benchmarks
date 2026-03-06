@@ -85,6 +85,7 @@ jobs:
         use-only-tar-bz2: true # Needed for package caching
 
     - name: Get info about runner 3
+      shell: bash
       run: |
         cat ~/.profile | echo ".profile does not exist"
         cat ~/.bashrc | echo ".bashrc does not exist"
