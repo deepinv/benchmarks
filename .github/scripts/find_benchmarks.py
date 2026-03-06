@@ -106,7 +106,7 @@ def main() -> None:
         filtered_dirs = filter_changed_dirs(all_dirs, changed_files)
     else:
         # No ref_range (e.g., schedule/tag/create): include all benchmarks
-        filtered_dirs = all_dirs
+        filtered_dirs = all_dirs[0]
 
     # Output as JSON
     result = json.dumps(filtered_dirs)
