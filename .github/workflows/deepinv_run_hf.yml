@@ -12,7 +12,7 @@ on:
 
 jobs:
   find-benchmarks:
-    runs-on: ubuntu-latest
+    runs-on: gpu  # ubuntu-latest
     outputs:
       benchmark-dirs: ${{ steps.find-dirs.outputs.dirs }}
     steps:
