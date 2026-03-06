@@ -94,7 +94,7 @@ jobs:
       run: |
         conda install -yq pip
         pip install -U git+https://github.com/benchopt/benchopt huggingface_hub
-        benchopt install ${{ matrix.benchmark_dir }}
+        benchopt install -y ${{ matrix.benchmark_dir }}
 
     - name: Run benchmarks
       run: |
