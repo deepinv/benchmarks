@@ -13,7 +13,8 @@ dependencies = [
 
 [project.optional-dependencies]
 test = [
-    "pytest"
+    "pytest",
+    "datasets",
 ]
 
 [tool.setuptools.packages.find]
