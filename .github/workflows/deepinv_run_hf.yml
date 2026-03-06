@@ -90,7 +90,7 @@ jobs:
 
     - name: Run benchmarks
       run: |
-        benchopt run ${{ matrix.benchmark_dir }} --env-name ${{ env.CONDA_ENV }} --output results_ci_run.csv --no-plot -d "*[debug=True]"
+        benchopt run ${{ matrix.benchmark_dir }} --env-name ${{ env.CONDA_ENV }} --output results_ci_run.csv --no-plot
 
     - name: Upload results
       run: |
