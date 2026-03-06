@@ -96,5 +96,5 @@ jobs:
       run: |
         benchopt publish ${{ matrix.benchmark_dir }} --hub huggingface \
             --filename ${{ matrix.benchmark_dir }}/outputs/results_ci_run.csv \
-            --repo deepinv/benchmark --keep last \
+            --repo deepinv/benchmarks --keep last \
             --token ${{ secrets.HF_TOKEN }}
