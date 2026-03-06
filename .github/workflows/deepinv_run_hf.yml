@@ -70,6 +70,9 @@ jobs:
         # invalidate it every month to avoid stale caches.
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
 
+    - name: Clean up any existing miniconda installation
+      run: rm -rf /home/jtachell/miniconda3
+
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
       with:
