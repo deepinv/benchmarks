@@ -44,7 +44,7 @@ jobs:
             # don't run on the template benchmark, which is not meant to be run
             - benchmark_dir: "deepinv_bench/benchmarks/benchmark_template"
     env:
-      CONDA_ENV: 'run_env'
+      BENCHOPT_CONDA_ENV: 'run_env'
       BENCHOPT_CONDA_CMD: 'mamba'
     defaults:
       run:
@@ -82,14 +82,14 @@ jobs:
         use-mamba: true
         channels: conda-forge
         python-version: 3.12
-        activate-environment: ${{ env.CONDA_ENV }}
+        activate-environment: ${{ env.BENCHOPT_CONDA_ENV }}
         use-only-tar-bz2: true # Needed for package caching
 
     - name: Install benchopt and its dependencies
       run: |
         mamba install -yq pip
         pip install -U git+https://github.com/benchopt/benchopt huggingface_hub
-        benchopt install ${{ matrix.benchmark_dir }} --env-name ${{ env.CONDA_ENV }}
+        benchopt install ${{ matrix.benchmark_dir }} --env-name ${{ env.BENCHOPT_CONDA_ENV }}
 
     - name: Run benchmarks
       run: |
