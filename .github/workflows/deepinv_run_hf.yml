@@ -94,6 +94,12 @@ jobs:
       run: |
         mamba install -yq pip
         pip install -U git+https://github.com/benchopt/benchopt
+        conda env list
+        conda list
+
+    - name: Install benchmark dependencies
+      run: |
+        conda env list
         benchopt install -y ${{ matrix.benchmark_dir }}
 
     - name: Run benchmarks
