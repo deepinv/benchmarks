@@ -69,6 +69,12 @@ jobs:
         # invalidate it every month to avoid stale caches.
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
 
+    - name: Get info about runner
+      shell: bash
+      run: |
+        cat ~/.bashrc
+        conda info
+
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
       with:
@@ -78,6 +84,12 @@ jobs:
         python-version: 3.12
         installation-dir: ~/deepinv_bench_conda
         use-only-tar-bz2: true # Needed for package caching
+
+    - name: Get info about runner
+      shell: bash
+      run: |
+        cat ~/.bashrc
+        conda info
 
     - name: Install benchopt and its dependencies
       run: |
