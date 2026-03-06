@@ -72,9 +72,11 @@ jobs:
         # invalidate it every month to avoid stale caches.
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
 
-    - name: Create job-specific HOME
+    - name: Setup runner isolation
       shell: bash
-      run: mkdir -p $HOME
+      run: |
+        mkdir -p $HOME
+        rm $HOME/miniconda/_conda || echo "symlink doesn't exist"
 
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
