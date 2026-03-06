@@ -84,6 +84,13 @@ def filter_changed_dirs(dirs: list[str], changed_files: set[str]) -> list[str]:
 
 
 def main() -> None:
+
+    import argparse
+    parser = argparse.ArgumentParser(description='Find benchmarks in sub-repo')
+    parser.add_argument('--all', action="store_true",
+                        help='Force to run all benchmarks')
+    args = parser.parse_args()
+
     root = Path.cwd()
     repo = Repo(root)
 
@@ -93,7 +100,7 @@ def main() -> None:
     # Get reference range for filtering
     ref_range = get_ref_range(repo)
 
-    if ref_range:
+    if ref_range and not args.all:
         base, head = ref_range
         changed_files = get_changed_files(repo, base, head)
         filtered_dirs = filter_changed_dirs(all_dirs, changed_files)
