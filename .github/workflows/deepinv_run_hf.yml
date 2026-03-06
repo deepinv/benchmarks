@@ -92,7 +92,6 @@ jobs:
         conda-remove-defaults: true
         python-version: '3.11'
         activate-environment: ${{ env.RUN_CONDA_ENV }}
-        use-only-tar-bz2: true # Needed for package caching
 
     - name: Install benchopt and its dependencies
       run: |
