@@ -62,7 +62,7 @@ jobs:
     - name: Setup runner isolation
       shell: bash
       run: |
-        rm $HOME || echo "HOME "$HOME" doesn't exist"
+        rm -rf $HOME || echo "HOME "$HOME" doesn't exist"
         mkdir -p $HOME
     - name: Get Date
       id: get-date
