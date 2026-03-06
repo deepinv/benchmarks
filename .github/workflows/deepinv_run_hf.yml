@@ -72,6 +72,7 @@ jobs:
 
     - name: Clean up any existing miniconda installation
       run: rm -rf /home/jtachell/miniconda3/_conda
+      shell: bash
 
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
