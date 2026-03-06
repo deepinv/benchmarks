@@ -70,6 +70,7 @@ jobs:
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
 
     - name: Get info about runner
+      shell: bash
       run: |
         cat ~/.profile | echo ".profile does not exist"
         cat ~/.bashrc | echo ".bashrc does not exist"
