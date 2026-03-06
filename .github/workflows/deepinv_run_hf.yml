@@ -44,7 +44,7 @@ jobs:
             # don't run on the template benchmark, which is not meant to be run
             - benchmark_dir: "deepinv_bench/benchmarks/benchmark_template"
     env:
-        HOME: '/local/jtachell/runner-${{ matrix.benchmark-dirs }}'
+        HOME: /local/jtachell/runner-${{ matrix.benchmark_dir }}
         TEST_CONDA_ENV: 'deepinv_bench'
     defaults:
       run:
