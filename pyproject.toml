@@ -15,6 +15,7 @@ dependencies = [
 test = [
     "pytest",
     "datasets",
+    "pyiqa",
 ]
 
 [tool.setuptools.packages.find]
