@@ -45,10 +45,11 @@ jobs:
             - benchmark_dir: "deepinv_bench/benchmarks/benchmark_template"
     env:
         HOME: /local/jtachell/runner-${{ matrix.benchmark_dir }}
+        RUNNER_TEMP: /local/jtachell/runner-${{ matrix.benchmark_dir }}/temp
+        # Setup conda and benchopt
         TEST_CONDA_ENV: 'deepinv_bench'
         BENCHOPT_CONDA_CMD: 'mamba'
         BENCHOPT_DEBUG: 1
-        RUNNER_TEMP: /local/jtachell/runner-${{ matrix.benchmark_dir }}/temp
     defaults:
       run:
         # Need to use this shell to get conda working properly.
@@ -57,6 +58,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
+
+    - name: Setup runner isolation
+      shell: bash
+      run: |
+        rm $HOME || echo "HOME "$HOME" doesn't exist"
+        mkdir -p $HOME
     - name: Get Date
       id: get-date
       run: |
@@ -72,12 +79,6 @@ jobs:
         # The cache is unique for each benchmark directory, OS and we
         # invalidate it every month to avoid stale caches.
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
-
-    - name: Setup runner isolation
-      shell: bash
-      run: |
-        mkdir -p $HOME
-        rm $HOME/miniconda3/_conda || echo "symlink doesn't exist"
 
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
@@ -101,11 +102,13 @@ jobs:
     - name: Install benchmark dependencies
       run: |
         conda env list
-        benchopt install -y ${{ matrix.benchmark_dir }}
+        benchopt install -y ${{ matrix.benchmark_dir }} \
+            --env-name ${{ env.TEST_CONDA_ENV }}
 
     - name: Run benchmarks
       run: |
-        benchopt run ${{ matrix.benchmark_dir }} --output results_ci_run.csv --no-plot
+        benchopt run ${{ matrix.benchmark_dir }} --output results_ci_run.csv \
+            --no-plot --env-name ${{ env.TEST_CONDA_ENV }}
 
     - name: Upload results
       run: |
