@@ -13,9 +13,7 @@ class Solver(BaseSolver):
         device = (
             dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
         )
-        self.model = dinv.models.ArtifactRemoval(
-            dinv.models.RAM(), device=device
-        )
+        self.model = dinv.models.RAM()
         self.model.device = device
 
     def run(self, _):
