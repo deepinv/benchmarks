@@ -7,7 +7,7 @@ name = "deepinv_bench"
 version = "0.0.1"
 dependencies = [
     "torch",
-    "deepinv",
+    "deepinv[dataset,denoisers,physics]",
     "benchopt>=1.8.0",
 ]
 
