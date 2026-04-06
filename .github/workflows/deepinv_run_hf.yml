@@ -26,7 +26,7 @@ jobs:
         run: pip install GitPython
       - name: Find benchmark directories
         id: find-dirs
-        run: python .github/scripts/find_benchmarks.py --all
+        run: python .github/scripts/find_benchmarks.py
         env:
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_EVENT_NAME: ${{ github.event_name }}
