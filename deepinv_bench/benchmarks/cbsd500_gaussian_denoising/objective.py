@@ -12,7 +12,7 @@ class Objective(BaseObjective):
         "cbsd500_gaussian_denoising"
     )
 
-    requirements = ["deepinv", "datasets", "pip::pyiqa"]
+    requirements = ["pip::deepinv[dataset,denoisers,physics]", "datasets", "pip::pyiqa"]
 
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.

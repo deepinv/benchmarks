@@ -29,15 +29,17 @@ def run_benchmark(
     model_name = model_name or str(model.__class__.__name__)
 
     try:
-        benchmark = benchopt.benchmark.Benchmark(
-            BENCHMARK_ROOT / benchmark_name
-        )
+        benchmark = benchopt.benchmark.Benchmark(BENCHMARK_ROOT / benchmark_name)
     except Exception:
-        all_benchmarks = "\n-".join([
-            p.name for p in BENCHMARK_ROOT.iterdir()
-            if p.is_dir() and not p.name.startswith(".")
-            and "template" not in p.name
-        ])
+        all_benchmarks = "\n-".join(
+            [
+                p.name
+                for p in BENCHMARK_ROOT.iterdir()
+                if p.is_dir()
+                and not p.name.startswith(".")
+                and "template" not in p.name
+            ]
+        )
         raise ValueError(
             f"Could not find benchmark: {benchmark_name}.\n"
             f"Available benchmarks are:\n-{all_benchmarks}\n\n"

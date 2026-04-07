@@ -36,7 +36,7 @@ jobs:
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
           GITHUB_BASE_REF: ${{ github.event.pull_request.base.ref }}
 
-  benchopt_dev:
+  dry-run-benchmarks:
     needs: find-benchmarks
     strategy:
       matrix:
@@ -47,4 +47,14 @@ jobs:
       benchmark_dir: ${{ matrix.benchmark_dir }}
 
   lint:
-    uses: benchopt/template_benchmark/.github/workflows/lint_benchmarks.yml@main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Black
+        run: pip install black
+      - name: Run Black check
+        run: black --check .
