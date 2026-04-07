@@ -30,12 +30,10 @@ class Dataset(BaseDataset):
         )
 
         # load the dataset
-        dataset = dinv.datasets.Set14HR(root, download=True,
-                                        transform=transform)
+        dataset = dinv.datasets.Set14HR(root, download=True, transform=transform)
 
         # define the physics according to the parameters
-        physics = dinv.physics.Denoising(
-            noise_model=dinv.physics.GaussianNoise())
+        physics = dinv.physics.Denoising(noise_model=dinv.physics.GaussianNoise())
 
         return dict(
             dataset=dataset,

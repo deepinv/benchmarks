@@ -10,8 +10,7 @@ class Solver(BaseSolver):
     parameters = {}
 
     def set_objective(self, train_dataset=None, physics=None):
-        device = dinv.utils.get_freer_gpu()\
-            if torch.cuda.is_available() else "cpu"
+        device = dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
         self.model = dinv.models.ArtifactRemoval(
             dinv.models.TVDenoiser(), device=device
         )

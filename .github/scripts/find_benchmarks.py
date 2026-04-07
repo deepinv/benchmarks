@@ -34,7 +34,7 @@ def get_ref_range(repo: Repo) -> tuple[str, str] | None:
             try:
                 repo.remotes.origin.fetch(
                     refspec=f"+refs/heads/{base_ref}:"
-                            f"refs/remotes/origin/{base_ref}",
+                    f"refs/remotes/origin/{base_ref}",
                     depth=1,
                     no_tags=True,
                     prune=True,
@@ -75,20 +75,20 @@ def get_changed_files(repo: Repo, base: str, head: str) -> set[str]:
 def filter_changed_dirs(dirs: list[str], changed_files: set[str]) -> list[str]:
     """Filter directories to only include those with changes."""
     return [
-        d for d in dirs
-        if any(
-                f.startswith(d + "/") or f.startswith(d + os.sep)
-                for f in changed_files
-        )
+        d
+        for d in dirs
+        if any(f.startswith(d + "/") or f.startswith(d + os.sep) for f in changed_files)
     ]
 
 
 def main() -> None:
 
     import argparse
-    parser = argparse.ArgumentParser(description='Find benchmarks in sub-repo')
-    parser.add_argument('--all', action="store_true",
-                        help='Force to run all benchmarks')
+
+    parser = argparse.ArgumentParser(description="Find benchmarks in sub-repo")
+    parser.add_argument(
+        "--all", action="store_true", help="Force to run all benchmarks"
+    )
     args = parser.parse_args()
 
     root = Path.cwd()
