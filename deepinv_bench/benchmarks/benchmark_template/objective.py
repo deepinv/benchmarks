@@ -32,7 +32,7 @@ class Objective(BaseObjective):
         # change metrics if needed
         metrics = [
             dinv.loss.PSNR(),
-            dinv.loss.LPIPS(device=device, norm_imputs="min_max"),
+            dinv.loss.LPIPS(device=device, norm_inputs="min_max"),
         ]
 
         results = dinv.test(
