@@ -3,7 +3,7 @@ import deepinv as dinv
 
 from deepinv_bench import run_benchmark
 
-TEST_BENCH = "cbsd500_gaussian_denoising"
+TEST_BENCH = "cbsd68_gaussian_denoising"
 
 
 def test_run_benchmark():
@@ -11,7 +11,7 @@ def test_run_benchmark():
     my_solver = dinv.models.DnCNN()
     results = run_benchmark(my_solver, TEST_BENCH, debug=True)
     assert isinstance(results, dict), "results should be a dict"
-    for col in ["PSNR", "NIQE"]:
+    for col in ["PSNR", "LPIPS"]:
         assert col in results, f"{col} not found in results"
         assert f"{col}_std" in results, f"{col}_std not found in results"
 

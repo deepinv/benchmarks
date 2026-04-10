@@ -39,6 +39,7 @@ def run_benchmark(
                 for p in BENCHMARK_ROOT.iterdir()
                 if p.is_dir()
                 and not p.name.startswith(".")
+                and not p.name == "plots"
                 and "template" not in p.name
             ]
         )

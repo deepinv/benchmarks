@@ -5,9 +5,9 @@ plot_configs: # add here configurations for plotting each metric
     plot_kind: deepinv_boxplot
     metric: PSNR
     scale: log
-  NIQE:
+  LPIPS:
     plot_kind: deepinv_boxplot
-    metric: NIQE
+    metric: LPIPS
     scale: linear
   # add more plot configurations as needed
 data_home: "../data"

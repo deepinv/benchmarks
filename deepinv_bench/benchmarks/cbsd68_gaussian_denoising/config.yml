@@ -5,8 +5,8 @@ plot_configs:
     plot_kind: deepinv_boxplot
     metric: PSNR
     scale: log
-  NIQE:
+  LPIPS:
     plot_kind: deepinv_boxplot
-    metric: NIQE
+    metric: LPIPS
     scale: linear
 data_home: "../data"

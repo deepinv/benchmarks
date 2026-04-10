@@ -14,7 +14,7 @@ class Dataset(BaseDataset):
     parameters = {
         "physics": ["Inpainting"],
         "noise": ["ZeroNoise"],
-        "mask": [.3],
+        "mask": [0.3],
         "img_size": [256],
         "debug": [False],
     }
@@ -35,8 +35,5 @@ class Dataset(BaseDataset):
 
         return dict(
             dataset=dataset,
-            physics=Inpainting(
-                mask=.3,
-                img_size=(3, 256, 256)
-            ),
+            physics=Inpainting(mask=0.3, img_size=(3, 256, 256)),
         )

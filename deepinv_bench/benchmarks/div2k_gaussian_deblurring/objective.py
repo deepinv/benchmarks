@@ -30,7 +30,10 @@ class Objective(BaseObjective):
         device = getattr(model, "device", None)
         self.physics = self.physics.to(device)
 
-        metrics = [dinv.loss.PSNR(center_crop=-16), dinv.loss.LPIPS(device=device, center_crop=-16)]
+        metrics = [
+            dinv.loss.PSNR(center_crop=-16),
+            dinv.loss.LPIPS(device=device, center_crop=-16),
+        ]
         results = dinv.test(
             model,
             DataLoader(self.dataset),

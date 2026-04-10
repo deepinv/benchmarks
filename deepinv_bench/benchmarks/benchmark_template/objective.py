@@ -30,7 +30,7 @@ class Objective(BaseObjective):
         self.physics = self.physics.to(device)
 
         # change metrics if needed
-        metrics = [dinv.loss.PSNR(), dinv.loss.NIQE(device=device)]
+        metrics = [dinv.loss.PSNR(), dinv.loss.LPIPS(device=device)]
 
         results = dinv.test(
             model,
