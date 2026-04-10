@@ -5,7 +5,7 @@ import deepinv as dinv
 
 
 class Solver(BaseSolver):
-    name = "DPS"
+    name = "DiffPIR"
 
     parameters = {"denoiser": ["DRUNet", "DiffUNet"], "zeta": [0.95]}
 

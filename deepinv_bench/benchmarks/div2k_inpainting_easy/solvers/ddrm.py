@@ -5,9 +5,9 @@ import deepinv as dinv
 
 
 class Solver(BaseSolver):
-    name = "DiffPIR"
+    name = "DDRM"
 
-    parameters = {"denoiser": ["DRUNet", "DiffUNet"], "zeta": [0.45]}
+    parameters = {"denoiser": ["DRUNet", "DiffUNet"], "zeta": [0.95]}
 
     def set_objective(self, train_dataset=None, physics=None):
         device = dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
@@ -19,9 +19,7 @@ class Solver(BaseSolver):
         else:
             raise NotImplementedError
 
-        self.model = dinv.sampling.DiffPIR(
-            model=denoiser, zeta=self.zeta, data_fidelity=dinv.optim.L2(), device=device
-        )
+        self.model = dinv.sampling.DDRM(denoiser=denoiser)
         self.model.device = device
 
     def run(self, _):
