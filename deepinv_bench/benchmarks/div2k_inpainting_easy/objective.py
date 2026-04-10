@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-    name = "DIV2K Gaussian Deblurring"
+    name = "DIV2K Inpainting (30% random)"
 
     url = (
         "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"
@@ -30,7 +30,7 @@ class Objective(BaseObjective):
         device = getattr(model, "device", None)
         self.physics = self.physics.to(device)
 
-        metrics = [dinv.loss.PSNR(center_crop=-16), dinv.loss.LPIPS(device=device, center_crop=-16)]
+        metrics = [dinv.loss.PSNR(), dinv.loss.LPIPS(device=device)]
         results = dinv.test(
             model,
             DataLoader(self.dataset),
