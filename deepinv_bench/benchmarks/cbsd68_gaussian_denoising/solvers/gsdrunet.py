@@ -5,14 +5,14 @@ import deepinv as dinv
 
 
 class Solver(BaseSolver):
-    name = "EPLLDenoiser"
+    name = "GSDRUNet"
 
     parameters = {}
 
     def set_objective(self, train_dataset=None, physics=None):
         device = dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
         self.model = dinv.models.ArtifactRemoval(
-            dinv.models.EPLLDenoiser(), device=device
+            dinv.models.GSDRUNet(pretrained="download"), device=device
         )
         self.model.device = device
 

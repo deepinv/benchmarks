@@ -18,6 +18,7 @@ class Solver(BaseSolver):
                 self.model = model
 
             def forward(self, y, physics, **kwargs):
+                # finetuned ths value for best perf
                 return self.model(y, ths=7 * physics.noise_model.sigma)
 
         self.model = MyDenoiser(model=dinv.models.TGVDenoiser())

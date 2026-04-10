@@ -29,7 +29,9 @@ def run_benchmark(
     model_name = model_name or str(model.__class__.__name__)
 
     try:
-        benchmark = benchopt.benchmark.Benchmark(BENCHMARK_ROOT / benchmark_name, no_cache=True)
+        benchmark = benchopt.benchmark.Benchmark(
+            BENCHMARK_ROOT / benchmark_name, no_cache=True
+        )
     except Exception:
         all_benchmarks = "\n-".join(
             [
