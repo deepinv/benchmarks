@@ -12,7 +12,7 @@ class Objective(BaseObjective):
         "cbsd500_gaussian_denoising"
     )
 
-    requirements = ["pip::deepinv[dataset,denoisers,physics]", "datasets", "pip::pyiqa"]
+    requirements = ["pip::deepinv[dataset,denoisers,physics]", "datasets"]
 
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.
@@ -29,7 +29,10 @@ class Objective(BaseObjective):
         device = getattr(model, "device", None)
         self.physics = self.physics.to(device)
 
-        metrics = [dinv.loss.PSNR(), dinv.loss.NIQE(device=device)]
+        metrics = [
+            dinv.loss.PSNR(),
+            dinv.loss.LPIPS(device=device, norm_inputs="min_max"),
+        ]
 
         results = dinv.test(
             model,

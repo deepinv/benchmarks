@@ -11,7 +11,7 @@ class Plot(BasePlot):
     options = {
         "metric": [
             "PSNR",
-            "NIQE",
+            "LPIPS",
         ],
     }
 

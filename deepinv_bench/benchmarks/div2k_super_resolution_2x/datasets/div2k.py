@@ -5,18 +5,17 @@ import deepinv as dinv
 from torchvision import transforms
 from deepinv.datasets import DIV2K
 from deepinv.physics import (
-    Blur,
-    GaussianNoise,
+    Downsampling,
 )
 
 
 class Dataset(BaseDataset):
     name = "DIV2K"
     parameters = {
-        "physics": ["Blur"],
-        "noise": ["GaussianNoise"],
-        "sigma": [0.05],
-        "sigma_blur": [2],
+        "physics": ["Downsampling"],
+        "noise": ["ZeroNoise"],
+        "factor": [2],
+        "filter": ["bicubic"],
         "img_size": [256],
         "debug": [False],
     }
@@ -37,8 +36,8 @@ class Dataset(BaseDataset):
 
         return dict(
             dataset=dataset,
-            physics=Blur(
-                filter=dinv.physics.blur.gaussian_blur(2),
-                noise_model=GaussianNoise(0.05),
+            physics=Downsampling(
+                factor=2,
+                filter="bicubic",
             ),
         )

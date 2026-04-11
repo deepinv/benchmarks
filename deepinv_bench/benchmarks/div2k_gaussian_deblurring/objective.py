@@ -13,7 +13,7 @@ class Objective(BaseObjective):
         "div2k_gaussian_deblurring"
     )
 
-    requirements = ["deepinv", "datasets", "pip::pyiqa"]
+    requirements = ["deepinv", "datasets"]
 
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.
@@ -30,8 +30,10 @@ class Objective(BaseObjective):
         device = getattr(model, "device", None)
         self.physics = self.physics.to(device)
 
-        metrics = [dinv.loss.PSNR(), dinv.loss.NIQE(device=device)]
-        t_start = time.perf_counter()
+        metrics = [
+            dinv.loss.PSNR(center_crop=-16),
+            dinv.loss.LPIPS(device=device, center_crop=-16, norm_inputs="min_max"),
+        ]
         results = dinv.test(
             model,
             DataLoader(self.dataset),
@@ -41,7 +43,6 @@ class Objective(BaseObjective):
             metrics=metrics,
             compare_no_learning=False,
         )
-        results["runtime"] = time.perf_counter() - t_start
 
         return results
 

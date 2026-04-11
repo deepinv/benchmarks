@@ -3,6 +3,7 @@
 **/__cache__/
 **/data/
 **/outputs/
+/tmp/**
 **/*.egg-info/
 
 # IDE config folders

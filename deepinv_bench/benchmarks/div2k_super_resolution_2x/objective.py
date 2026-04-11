@@ -1,24 +1,25 @@
 from benchopt import BaseObjective
 
+import time
 import deepinv as dinv
 from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-    # modify name of the benchmark
-    name = "benchmark_name"
+    name = "DIV2K Super Resolution (2x)"
 
     url = (
         "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"
-        "benchmark_template"
+        "div2k_gaussian_deblurring"
     )
 
-    requirements = ["deepinv", "datasets", "pip::pyiqa"]
+    requirements = ["deepinv", "datasets"]
 
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.
     min_benchopt_version = "1.8"
 
+    # Deactivate multiple runs for each solver
     sampling_strategy = "run_once"
 
     def set_data(self, dataset, physics):
@@ -29,12 +30,10 @@ class Objective(BaseObjective):
         device = getattr(model, "device", None)
         self.physics = self.physics.to(device)
 
-        # change metrics if needed
         metrics = [
             dinv.loss.PSNR(),
             dinv.loss.LPIPS(device=device, norm_inputs="min_max"),
         ]
-
         results = dinv.test(
             model,
             DataLoader(self.dataset),

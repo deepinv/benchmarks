@@ -5,13 +5,15 @@ import deepinv as dinv
 
 
 class Solver(BaseSolver):
-    name = "GSDRUNet"
+    name = "DPIR"
 
-    parameters = {}
+    parameters = {
+        "sigma": [0.05, 0.1],
+    }
 
     def set_objective(self, train_dataset=None, physics=None):
         device = dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
-        self.model = dinv.models.ArtifactRemoval(dinv.models.GSDRUNet(), device=device)
+        self.model = dinv.optim.DPIR(sigma=self.sigma, device=device)
         self.model.device = device
 
     def run(self, _):

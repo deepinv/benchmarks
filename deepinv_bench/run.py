@@ -29,7 +29,9 @@ def run_benchmark(
     model_name = model_name or str(model.__class__.__name__)
 
     try:
-        benchmark = benchopt.benchmark.Benchmark(BENCHMARK_ROOT / benchmark_name)
+        benchmark = benchopt.benchmark.Benchmark(
+            BENCHMARK_ROOT / benchmark_name, no_cache=True
+        )
     except Exception:
         all_benchmarks = "\n-".join(
             [
@@ -37,6 +39,7 @@ def run_benchmark(
                 for p in BENCHMARK_ROOT.iterdir()
                 if p.is_dir()
                 and not p.name.startswith(".")
+                and not p.name == "plots"
                 and "template" not in p.name
             ]
         )
