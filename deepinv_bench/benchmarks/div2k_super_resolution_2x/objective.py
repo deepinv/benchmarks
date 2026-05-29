@@ -10,7 +10,7 @@ class Objective(BaseObjective):
 
     url = (
         "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"
-        "div2k_gaussian_deblurring"
+        "div2k_super_resolution_2x"
     )
 
     requirements = ["deepinv", "datasets"]
