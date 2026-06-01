@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  create:
     tags:
       - '**'
   pull_request:
@@ -17,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       benchmark-dirs: ${{ steps.find-dirs.outputs.dirs }}
+      found_benchmarks: ${{ steps.find-dirs.outputs.found_benchmarks }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -24,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.14'
       - name: Install dependencies
         run: pip install GitPython
       - name: Find benchmark directories
@@ -38,6 +38,7 @@ jobs:
 
   benchopt-tests:
     needs: find-benchmarks
+    if : needs.find-benchmarks.outputs.found_benchmarks == 'True'
     strategy:
       matrix:
         benchmark_dir: ${{ fromJson(needs.find-benchmarks.outputs.benchmark-dirs) }}

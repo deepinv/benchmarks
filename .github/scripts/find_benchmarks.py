@@ -94,13 +94,20 @@ def main() -> None:
     root = Path.cwd()
     repo = Repo(root)
 
-    # Find all benchmark directories
+    # Retrieve all benchmark directories and setup dispatch filters based
+    # on dispatch context and git reference range (if applicable)
     all_dirs = find_benchmark_dirs(root)
-
-    # Get reference range for filtering
+    dispatch_benchmark_dir = os.environ.get("DISPATCH_BENCHMARK_DIR", "")
     ref_range = get_ref_range(repo)
 
-    if ref_range and not args.all:
+    if dispatch_benchmark_dir:
+        # If a specific benchmark dir is provided via dispatch, directly include it.
+        assert dispatch_benchmark_dir in all_dirs, (
+            f"Provided BENCHMARK_DIR '{dispatch_benchmark_dir}' is not a valid benchmark."
+            "Valid values are:\n- " + "\n- ".join(all_dirs)
+        )
+        filtered_dirs = [dispatch_benchmark_dir]
+    elif ref_range and not args.all:
         base, head = ref_range
         changed_files = get_changed_files(repo, base, head)
         filtered_dirs = filter_changed_dirs(all_dirs, changed_files)
@@ -110,13 +117,15 @@ def main() -> None:
 
     # Output as JSON
     result = json.dumps(filtered_dirs)
-    print(result)
 
     # If running in GitHub Actions, set the output
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
         with open(github_output, "a") as f:
-            f.write(f"dirs={result}\n")
+            f.write(
+                f"found_benchmarks={len(filtered_dirs) > 0}\n"
+                f"dirs={result}\n"
+            )
 
 
 if __name__ == "__main__":

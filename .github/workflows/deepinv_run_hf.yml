@@ -4,16 +4,21 @@ on:
   push:
     branches:
       - main
-  create:
     tags:
       - '**'
   workflow_dispatch:
+    inputs:
+      benchmark_dir:
+        description: 'Single benchmark dir to run (leave empty to run all)'
+        required: false
+        default: ''
 
 jobs:
   find-benchmarks:
     runs-on: ubuntu-latest
     outputs:
       benchmark-dirs: ${{ steps.find-dirs.outputs.dirs }}
+      found_benchmarks: ${{ steps.find-dirs.outputs.found_benchmarks }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -21,7 +26,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.14'
       - name: Install dependencies
         run: pip install GitPython
       - name: Find benchmark directories
@@ -32,10 +37,12 @@ jobs:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
           GITHUB_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          DISPATCH_BENCHMARK_DIR: ${{ inputs.benchmark_dir }}
 
   run-benchmarks:
     runs-on: gpu  # ubuntu-latest
     needs: find-benchmarks
+    if : needs.find-benchmarks.outputs.found_benchmarks == 'True'
     timeout-minutes: 4320  # 3 days (max)
     strategy:
       matrix:
