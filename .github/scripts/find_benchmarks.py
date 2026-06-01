@@ -116,13 +116,14 @@ def main() -> None:
         filtered_dirs = all_dirs
 
     # Output as JSON
+    print(f"Found benchmark directories:\n{filtered_dirs}")
     result = json.dumps(filtered_dirs)
 
     # If running in GitHub Actions, set the output
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
         with open(github_output, "a") as f:
-            f.write(f"found_benchmarks={len(filtered_dirs) > 0}\n" f"dirs={result}\n")
+            f.write(f"dirs={result}\nfound_benchmarks={len(filtered_dirs) > 0}\n")
 
 
 if __name__ == "__main__":
