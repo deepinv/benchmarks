@@ -103,7 +103,7 @@ def main() -> None:
     if dispatch_benchmark_dir:
         # If a specific benchmark dir is provided via dispatch, directly include it.
         assert dispatch_benchmark_dir in all_dirs, (
-            f"Provided BENCHMARK_DIR '{dispatch_benchmark_dir}' is not a valid benchmark."
+            f"Provided BENCHMARK_DIR '{dispatch_benchmark_dir}' is not a valid benchmark.\n"
             "Valid values are:\n- " + "\n- ".join(all_dirs)
         )
         filtered_dirs = [dispatch_benchmark_dir]
