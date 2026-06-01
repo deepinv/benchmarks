@@ -122,10 +122,7 @@ def main() -> None:
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
         with open(github_output, "a") as f:
-            f.write(
-                f"found_benchmarks={len(filtered_dirs) > 0}\n"
-                f"dirs={result}\n"
-            )
+            f.write(f"found_benchmarks={len(filtered_dirs) > 0}\n" f"dirs={result}\n")
 
 
 if __name__ == "__main__":
