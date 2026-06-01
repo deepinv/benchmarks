@@ -12,6 +12,7 @@ on:
 jobs:
   find-benchmarks:
     runs-on: ubuntu-latest
+    timeout-minutes: 4320  # 3 days (max)
     outputs:
       benchmark-dirs: ${{ steps.find-dirs.outputs.dirs }}
     steps:
