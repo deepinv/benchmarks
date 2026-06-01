@@ -67,19 +67,17 @@ jobs:
       run: |
         rm -rf $HOME || echo "HOME "$HOME" doesn't exist"
         mkdir -p $HOME
-    - name: Get Date
+    - name: Compute cache key based on the date (monthly)
       id: get-date
       run: |
         echo "date=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
       shell: bash
     - name: Cache benchopt runs and conda packages
       id: cache-benchopt
-      uses: actions/cache@v5
+      uses: actions/cache/restore@v5  # restore only
       with:
         path: |
             ${{ matrix.benchmark_dir }}/__cache__
-        # The cache is unique for each benchmark directory, OS and we
-        # invalidate it every month to avoid stale caches.
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
 
     - name: Setup Conda
@@ -110,8 +108,17 @@ jobs:
             --no-plot --env-name ${{ env.RUN_CONDA_ENV }}
 
     - name: Upload results
+      if: always()
       run: |
         benchopt publish ${{ matrix.benchmark_dir }} --hub huggingface \
             --filename ${{ matrix.benchmark_dir }}/outputs/results_ci_run.csv \
             --repo deepinv/benchmarks --keep last \
             --token ${{ secrets.HF_TOKEN }}
+
+    - name: Save cache
+      if: always()
+      uses: actions/cache/save@v5
+      with:
+        path: |
+            ${{ matrix.benchmark_dir }}/__cache__
+        key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
