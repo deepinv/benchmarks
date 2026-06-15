@@ -4,16 +4,21 @@ on:
   push:
     branches:
       - main
-  create:
     tags:
       - '**'
   workflow_dispatch:
+    inputs:
+      benchmark_dir:
+        description: 'Single benchmark dir to run (leave empty to run all)'
+        required: false
+        default: ''
 
 jobs:
   find-benchmarks:
     runs-on: ubuntu-latest
     outputs:
       benchmark-dirs: ${{ steps.find-dirs.outputs.dirs }}
+      found_benchmarks: ${{ steps.find-dirs.outputs.found_benchmarks }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -21,7 +26,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.14'
       - name: Install dependencies
         run: pip install GitPython
       - name: Find benchmark directories
@@ -32,10 +37,12 @@ jobs:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
           GITHUB_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          DISPATCH_BENCHMARK_DIR: ${{ inputs.benchmark_dir }}
 
   run-benchmarks:
     runs-on: gpu  # ubuntu-latest
     needs: find-benchmarks
+    if : needs.find-benchmarks.outputs.found_benchmarks == 'True'
     timeout-minutes: 4320  # 3 days (max)
     strategy:
       matrix:
@@ -67,19 +74,17 @@ jobs:
       run: |
         rm -rf $HOME || echo "HOME "$HOME" doesn't exist"
         mkdir -p $HOME
-    - name: Get Date
+    - name: Compute cache key based on the date (monthly)
       id: get-date
       run: |
         echo "date=$(/bin/date -u "+%Y%m")" >> $GITHUB_OUTPUT
       shell: bash
     - name: Cache benchopt runs and conda packages
       id: cache-benchopt
-      uses: actions/cache@v5
+      uses: actions/cache/restore@v5  # restore only
       with:
         path: |
             ${{ matrix.benchmark_dir }}/__cache__
-        # The cache is unique for each benchmark directory, OS and we
-        # invalidate it every month to avoid stale caches.
         key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
 
     - name: Setup Conda
@@ -110,8 +115,17 @@ jobs:
             --no-plot --env-name ${{ env.RUN_CONDA_ENV }}
 
     - name: Upload results
+      if: always()
       run: |
         benchopt publish ${{ matrix.benchmark_dir }} --hub huggingface \
             --filename ${{ matrix.benchmark_dir }}/outputs/results_ci_run.csv \
             --repo deepinv/benchmarks --keep last \
             --token ${{ secrets.HF_TOKEN }}
+
+    - name: Save cache
+      if: always()
+      uses: actions/cache/save@v5
+      with:
+        path: |
+            ${{ matrix.benchmark_dir }}/__cache__
+        key: ${{ runner.os }}-${{matrix.benchmark_dir}}-${{ steps.get-date.outputs.date }}
