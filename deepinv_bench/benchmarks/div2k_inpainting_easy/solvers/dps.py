@@ -30,7 +30,10 @@ class Solver(BaseSolver):
             raise NotImplementedError
 
         self.model = dinv.sampling.DPS(
-            denoiser=denoiser, device=device, max_iter=self.max_iter, dtype=torch.float32
+            denoiser=denoiser,
+            device=device,
+            max_iter=self.max_iter,
+            dtype=torch.float32,
         )
         self.model.device = device
 
