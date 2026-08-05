@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-    name = "DIV2K Super Resolution (2x)"
+    name = "DIV2K Super Resolution 2x"
 
     url = (
         "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"

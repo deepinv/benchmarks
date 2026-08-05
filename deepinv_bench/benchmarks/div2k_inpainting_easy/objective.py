@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-    name = "DIV2K Inpainting (30% random)"
+    name = "DIV2K Inpainting easy"
 
     url = (
         "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"

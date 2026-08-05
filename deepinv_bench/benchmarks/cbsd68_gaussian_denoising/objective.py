@@ -5,11 +5,11 @@ from torch.utils.data import DataLoader
 
 
 class Objective(BaseObjective):
-    name = "CBSD68 denoising"
+    name = "CBSD68 gaussian denoising"
 
     url = (
         "https://github.com/deep-inverse/benchmarks/deepinv_bench/benchmarks/"
-        "cbsd500_gaussian_denoising"
+        "cbsd68_gaussian_denoising"
     )
 
     requirements = ["pip::deepinv[dataset,denoisers,physics]", "datasets"]
