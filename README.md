@@ -54,9 +54,9 @@ the structure given in the existing [benchmark_template](https://github.com/deep
 
 A new benchmark requires: 
 
-- A **dataset** from the [DeepInverse datasets](https://deepinv.org/deepinv/user_guide/training/datasets.html). 
-- A **forward operator** from the [DeepInverse operators](https://deepinv.org/deepinv/user_guide/physics/physics.html).
-- A set of out-of-the-box **reconstruction methods** from the [DeepInverse reconstructors](https://deepinv.org/deepinv/user_guide/reconstruction/introduction.html) and potentially other custom solvers.
-- A set of **metrics** from the [DeepInverse metrics](https://deepinv.org/deepinv/user_guide/training/metric.html).
+- A **dataset** from the [DeepInverse datasets](https://deepinv.org/user_guide/training/datasets.html). 
+- A **forward operator** from the [DeepInverse operators](https://deepinv.org/user_guide/physics/physics.html).
+- A set of out-of-the-box **reconstruction methods** from the [DeepInverse reconstructors](https://deepinv.org/user_guide/reconstruction/introduction.html) and potentially other custom solvers.
+- A set of **metrics** from the [DeepInverse metrics](https://deepinv.org/user_guide/training/metric.html).
 
 If you would like to propose a new dataset, metric or forward operator, please [open an issue](https://github.com/deepinv/benchmarks/issues/new/choose).
