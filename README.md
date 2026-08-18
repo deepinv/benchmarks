@@ -6,7 +6,7 @@ of different image reconstruction methods implemented in the DeepInverse library
 - **DeepInverse documentation**: https://deepinv.org
 - **DeepInverse repository**: https://github.com/deepinv/deepinv
 
-**Leaderboards** are automatically generated and can be found in the [DeepInverse benchmarks documentation](https://deepinv.org/deepinv/benchmarks.html).
+**Leaderboards** are automatically generated and can be found in the [DeepInverse benchmarks documentation](https://deepinv.org/auto_benchmarks/benchmarks.html).
 
 Benchmark results are stored in a HuggingFace repository: https://huggingface.co/datasets/deepinv/benchmarks/tree/main
 
@@ -50,7 +50,7 @@ Also consider adding your solver to the collection of [existing solvers in DeepI
 ### Adding New Benchmarks
 
 To create a new benchmark, open a new pull request adding a new folder following
-the structure given in the existing [benchmark_template](https://github.com/deepinv/benchmarks) folder.
+the structure given in the existing [benchmark_template](https://github.com/deepinv/benchmarks/tree/main/deepinv_bench/benchmarks/benchmark_template) folder.
 
 A new benchmark requires: 
 
