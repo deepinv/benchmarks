@@ -37,7 +37,7 @@ results = run_benchmark(my_solver, "benchmark_name")
 where  `benchmark_name` is the name of the benchmark and `my_solver` is your out-of-the-box reconstruction method which receives `(y, physics)` where
 
 - `y` is a `torch.Tensor` containing the measurements,
-- `physics` is the forward operator, see more details in the [DeepInverse physics documentation](https://deepinv.org/deepinv/user_guide/physics/intro.html).
+- `physics` is the forward operator, see more details in the [DeepInverse physics documentation](https://deepinv.org/user_guide/physics/intro.html).
 
 ### Adding New Solvers
 
