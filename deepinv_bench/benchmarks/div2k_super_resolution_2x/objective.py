@@ -13,7 +13,7 @@ class Objective(BaseObjective):
         "div2k_super_resolution_2x"
     )
 
-    requirements = ["deepinv", "datasets"]
+    requirements = ["deepinv", "datasets", "timm"]
 
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.
