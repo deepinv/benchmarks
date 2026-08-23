@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0.0"]
+requires = ["setuptools>=62.3.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -19,5 +19,14 @@ test = [
 ]
 
 [tool.setuptools.packages.find]
+include = ["deepinv_bench*"]
+exclude = ["deepinv_bench.tests*"]
 namespaces = false
+
+# benchopt loads the benchmark tree by file path, so ship it as data.
+[tool.setuptools.package-data]
+deepinv_bench = [
+    "benchmarks/**/*.py",
+    "benchmarks/**/*.yml",
+]
 
