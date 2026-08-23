@@ -6,7 +6,7 @@ of different image reconstruction methods implemented in the DeepInverse library
 - **DeepInverse documentation**: https://deepinv.org
 - **DeepInverse repository**: https://github.com/deepinv/deepinv
 
-**Leaderboards** are automatically generated and can be found in the [DeepInverse benchmarks documentation](https://deepinv.org/deepinv/benchmarks.html).
+**Leaderboards** are automatically generated and can be found in the [DeepInverse benchmarks documentation](https://deepinv.org/auto_benchmarks/benchmarks.html).
 
 Benchmark results are stored in a HuggingFace repository: https://huggingface.co/datasets/deepinv/benchmarks/tree/main
 
@@ -37,7 +37,7 @@ results = run_benchmark(my_solver, "benchmark_name")
 where  `benchmark_name` is the name of the benchmark and `my_solver` is your out-of-the-box reconstruction method which receives `(y, physics)` where
 
 - `y` is a `torch.Tensor` containing the measurements,
-- `physics` is the forward operator, see more details in the [DeepInverse physics documentation](https://deepinv.org/deepinv/user_guide/physics/intro.html).
+- `physics` is the forward operator, see more details in the [DeepInverse physics documentation](https://deepinv.org/user_guide/physics/intro.html).
 
 ### Adding New Solvers
 
@@ -50,13 +50,13 @@ Also consider adding your solver to the collection of [existing solvers in DeepI
 ### Adding New Benchmarks
 
 To create a new benchmark, open a new pull request adding a new folder following
-the structure given in the existing [benchmark_template](https://github.com/deepinv/benchmarks) folder.
+the structure given in the existing [benchmark_template](https://github.com/deepinv/benchmarks/tree/main/deepinv_bench/benchmarks/benchmark_template) folder.
 
 A new benchmark requires: 
 
-- A **dataset** from the [DeepInverse datasets](https://deepinv.org/deepinv/user_guide/training/datasets.html). 
-- A **forward operator** from the [DeepInverse operators](https://deepinv.org/deepinv/user_guide/physics/physics.html).
-- A set of out-of-the-box **reconstruction methods** from the [DeepInverse reconstructors](https://deepinv.org/deepinv/user_guide/reconstruction/introduction.html) and potentially other custom solvers.
-- A set of **metrics** from the [DeepInverse metrics](https://deepinv.org/deepinv/user_guide/training/metric.html).
+- A **dataset** from the [DeepInverse datasets](https://deepinv.org/user_guide/training/datasets.html). 
+- A **forward operator** from the [DeepInverse operators](https://deepinv.org/user_guide/physics/physics.html).
+- A set of out-of-the-box **reconstruction methods** from the [DeepInverse reconstructors](https://deepinv.org/user_guide/reconstruction/introduction.html) and potentially other custom solvers.
+- A set of **metrics** from the [DeepInverse metrics](https://deepinv.org/user_guide/training/metric.html).
 
 If you would like to propose a new dataset, metric or forward operator, please [open an issue](https://github.com/deepinv/benchmarks/issues/new/choose).
