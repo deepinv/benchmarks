@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import torch
@@ -6,6 +7,8 @@ import pandas as pd
 import deepinv as dinv
 
 BENCHMARK_ROOT = Path(__file__).parent / "benchmarks"
+
+os.environ.setdefault("BENCHOPT_DATA_HOME", str(dinv.utils.get_cache_home()))
 
 
 def run_benchmark(
