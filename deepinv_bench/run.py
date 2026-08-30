@@ -1,4 +1,5 @@
 import os
+import warnings
 from pathlib import Path
 
 import torch
@@ -9,6 +10,8 @@ import deepinv as dinv
 BENCHMARK_ROOT = Path(__file__).parent / "benchmarks"
 
 os.environ.setdefault("BENCHOPT_DATA_HOME", str(dinv.utils.get_cache_home()))
+# benchopt's env-var config check only knows abt globals
+warnings.filterwarnings("ignore", message="data_home is set")
 
 
 def run_benchmark(
