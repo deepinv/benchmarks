@@ -3,10 +3,14 @@
 
 import json
 import os
+import re
 from pathlib import Path
 
 from git import Repo
 from git.exc import GitCommandError
+
+# Matches e.g. `    name = "DRUNet"` inside a benchopt Solver class.
+SOLVER_NAME_RE = re.compile(r"""^\s*name\s*=\s*(['"])(.*?)\1""", re.MULTILINE)
 
 
 def find_benchmark_dirs(root: Path, max_depth: int = 4) -> list[str]:
@@ -81,6 +85,46 @@ def filter_changed_dirs(dirs: list[str], changed_files: set[str]) -> list[str]:
     ]
 
 
+def parse_solver_name(path: Path) -> str | None:
+    """Extract the `name` class attribute from a benchopt solver file."""
+    try:
+        text = path.read_text()
+    except OSError:
+        return None
+    match = SOLVER_NAME_RE.search(text)
+    return match.group(2) if match else None
+
+
+def compute_solver_filters(
+    dirs: list[str], changed_files: set[str], root: Path
+) -> dict[str, list[str]]:
+    """Compute, for each benchmark dir, which solvers to restrict a run to.
+    """
+    filters: dict[str, list[str]] = {}
+    for d in dirs:
+        solver_prefix = d + "/solvers/"
+        dir_changed = {f for f in changed_files if f.startswith(d + "/")}
+
+        if not dir_changed or any(
+            not f.startswith(solver_prefix) for f in dir_changed
+        ):
+            filters[d] = []
+            continue
+
+        names = []
+        for f in dir_changed:
+            if not f.endswith(".py") or Path(f).name == "__init__.py":
+                continue
+            name = parse_solver_name(root / f)
+            if name is None:
+                names = []
+                break
+            names.append(name)
+
+        filters[d] = sorted(set(names))
+    return filters
+
+
 def main() -> None:
 
     import argparse
@@ -107,16 +151,20 @@ def main() -> None:
             "Valid values are:\n- " + "\n- ".join(all_dirs)
         )
         filtered_dirs = [dispatch_benchmark_dir]
+        solver_filters = {}
     elif ref_range and not args.all:
         base, head = ref_range
         changed_files = get_changed_files(repo, base, head)
         filtered_dirs = filter_changed_dirs(all_dirs, changed_files)
+        solver_filters = compute_solver_filters(filtered_dirs, changed_files, root)
     else:
         # No ref_range (e.g., schedule/tag/create): include all benchmarks
         filtered_dirs = all_dirs
+        solver_filters = {}
 
     # Output as JSON
     print(f"Found benchmark directories:\n{filtered_dirs}")
+    print(f"Solver filters (empty list means run all solvers):\n{solver_filters}")
     result = json.dumps(filtered_dirs)
 
     # If running in GitHub Actions, set the output
@@ -124,6 +172,7 @@ def main() -> None:
     if github_output:
         with open(github_output, "a") as f:
             f.write(f"dirs={result}\nfound_benchmarks={len(filtered_dirs) > 0}\n")
+            f.write(f"solver-filters={json.dumps(solver_filters)}\n")
 
 
 if __name__ == "__main__":
