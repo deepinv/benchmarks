@@ -15,6 +15,7 @@ class Solver(BaseSolver):
             dinv.models.GSDRUNet(pretrained="download"), device=device
         )
         self.model.device = device
+        # some comment
 
     def run(self, _):
         pass
