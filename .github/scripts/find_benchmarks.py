@@ -98,16 +98,13 @@ def parse_solver_name(path: Path) -> str | None:
 def compute_solver_filters(
     dirs: list[str], changed_files: set[str], root: Path
 ) -> dict[str, list[str]]:
-    """Compute, for each benchmark dir, which solvers to restrict a run to.
-    """
+    """Compute, for each benchmark dir, which solvers to restrict a run to."""
     filters: dict[str, list[str]] = {}
     for d in dirs:
         solver_prefix = d + "/solvers/"
         dir_changed = {f for f in changed_files if f.startswith(d + "/")}
 
-        if not dir_changed or any(
-            not f.startswith(solver_prefix) for f in dir_changed
-        ):
+        if not dir_changed or any(not f.startswith(solver_prefix) for f in dir_changed):
             filters[d] = []
             continue
 
