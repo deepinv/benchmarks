@@ -1,4 +1,4 @@
-from deepinv_bench.benchmarks.plots.deepinv_boxplot import Plot as _Plot
+from deepinv_bench.base.plots.deepinv_boxplot import Plot as _Plot
 
 
 class Plot(_Plot):
