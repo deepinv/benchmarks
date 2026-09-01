@@ -4,15 +4,20 @@ import torch
 import deepinv as dinv
 
 
+class Brovey(dinv.models.Reconstructor):
+    def forward(self, y, physics):
+        return physics.A_dagger(y)
+
+    
 class Solver(BaseSolver):
-    name = "A_dagger"
+    name = "Brovey"
 
     parameters = {}
 
     def set_objective(self, train_dataset=None, physics=None):
         device = dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
 
-        self.model = dinv.models.Pansharpen.A_dagger(device=device)
+        self.model = Brovey().to(device)
         self.model.device = device
 
     def run(self, _):
