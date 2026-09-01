@@ -11,7 +11,12 @@ class Solver(BaseSolver):
 
     def set_objective(self, train_dataset=None, physics=None):
         device = dinv.utils.get_freer_gpu() if torch.cuda.is_available() else "cpu"
-        self.model = dinv.models.ArtifactRemoval(dinv.models.FFDNet(n_conv_layers=12, nf=96, img_channels=3, norm=None, last_conv_bias=True), device=device)
+        self.model = dinv.models.ArtifactRemoval(
+            dinv.models.FFDNet(
+                n_conv_layers=12, nf=96, img_channels=3, norm=None, last_conv_bias=True
+            ),
+            device=device,
+        )
         self.model.device = device
 
     def run(self, _):
