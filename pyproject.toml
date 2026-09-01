@@ -7,7 +7,7 @@ name = "deepinv_bench"
 version = "0.0.1"
 dependencies = [
     "torch",
-    "deepinv[dataset,denoisers,physics]",
+    "deepinv[dataset,denoisers,physics] @ git+https://github.com/deepinv/deepinv.git@main",
     "benchopt>=1.8.0",
 ]
 
