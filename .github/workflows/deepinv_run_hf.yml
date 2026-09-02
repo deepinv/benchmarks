@@ -19,6 +19,7 @@ jobs:
     outputs:
       benchmark-dirs: ${{ steps.find-dirs.outputs.dirs }}
       found_benchmarks: ${{ steps.find-dirs.outputs.found_benchmarks }}
+      solver-filters: ${{ steps.find-dirs.outputs.solver-filters }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -60,6 +61,7 @@ jobs:
         BENCHOPT_CONDA_CMD: 'mamba'
         BENCHOPT_RAISE_INSTALL_ERROR: true
         BENCHOPT_DEBUG: 1
+        SOLVER_FILTERS_JSON: ${{ needs.find-benchmarks.outputs.solver-filters }}
     defaults:
       run:
         # Use non-login shell with BASH_ENV instead of -l to ensure
@@ -110,8 +112,17 @@ jobs:
             --env-name ${{ env.RUN_CONDA_ENV }}
 
     - name: Run benchmarks
+      env:
+        BENCHMARK_DIR: ${{ matrix.benchmark_dir }}
       run: |
-        benchopt run ${{ matrix.benchmark_dir }} --output results_ci_run.csv \
+        SOLVER_FLAGS=$(python3 -c "
+        import json, os, shlex
+        filters = json.loads(os.environ['SOLVER_FILTERS_JSON'] or '{}')
+        solvers = filters.get(os.environ['BENCHMARK_DIR'], [])
+        print(' '.join(f'-s {shlex.quote(name)}' for name in solvers))
+        ")
+        benchopt run ${{ matrix.benchmark_dir }} $SOLVER_FLAGS \
+            --output results_ci_run.csv \
             --no-plot --env-name ${{ env.RUN_CONDA_ENV }}
 
     - name: Upload results
