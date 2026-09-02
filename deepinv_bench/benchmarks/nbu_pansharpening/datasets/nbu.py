@@ -1,12 +1,11 @@
+import deepinv as dinv
 from benchopt import BaseDataset
 from benchopt.config import get_data_path
-
-import deepinv as dinv
 from torchvision import transforms
 
 
 class Dataset(BaseDataset):
-    name = "NBU"
+    name = "NBUDataset"
 
     parameters = {
         "physics": ["Pansharpening"],
@@ -30,7 +29,7 @@ class Dataset(BaseDataset):
         )
 
         dataset = dinv.datasets.NBUDataset(
-            root_dir="NBU",
+            root_dir=root,
             satellite=self.satellite,
             return_pan=self.return_pan,
             download=True,
@@ -43,7 +42,7 @@ class Dataset(BaseDataset):
             img_size=(4, self.img_size, self.img_size),
         )
 
-        return dict(
-            dataset=dataset,
-            physics=physics,
-        )
+        return {
+            "dataset": dataset,
+            "physics": physics,
+        }
